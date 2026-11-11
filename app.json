@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Gym Ledger",
+    "slug": "gym-ledger",
+    "version": "1.0.0",
+    "scheme": "gymledger",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F5F5F5",
+    "android": {
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.gymledger.app",
+      "permissions": ["VIBRATE"]
+    },
+    "web": { "bundler": "metro", "output": "single" },
+    "plugins": ["expo-router", "expo-font", "expo-sqlite"]
+  }
+}
