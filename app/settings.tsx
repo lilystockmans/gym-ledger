@@ -54,7 +54,7 @@ export default function SettingsScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin, paddingBottom: 80 }} keyboardShouldPersistTaps="handled">
         <TextBtn label="Back" onPress={() => router.back()} />
-        <Text style={[type.display, { marginTop: 8 }]}>Settings</Text>
+        <Text style={[type.display, { marginTop: 8, fontSize: 88, lineHeight: 100 }]} numberOfLines={1}>Settings</Text>
 
         <View style={{ height: 40 }} />
         <Text style={type.label}>Period</Text>
