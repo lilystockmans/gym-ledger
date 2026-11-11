@@ -1,0 +1,14 @@
+node_modules/
+.expo/
+dist/
+web-build/
+android/
+ios/
+*.apk
+*.aab
+.env
+.env.*
+!.env.example
+seed/personal.json
+.DS_Store
+.claude/
