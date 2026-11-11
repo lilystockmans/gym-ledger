@@ -1,9 +1,28 @@
 {
   "project": "gym-ledger",
-  "stage": "phase0",
-  "completed": ["repo+github", "scaffold", "contracts", "theme", "sample-home-web", "gradle-release-stub", "wiki"],
-  "next": "Lily approves the look, then scrum master starts workers W1 to W5 (Phase 1)",
+  "stage": "phase1",
+  "completed": [
+    "repo+github",
+    "scaffold",
+    "contracts",
+    "theme",
+    "sample-home-web",
+    "gradle-release-stub",
+    "wiki"
+  ],
+  "next": "Wait for W1 to W5 reports, then Phase 2: merge W1 and W2, then W3, W4, W5; run personal rules test locally; build-review; Gradle build",
   "date": "2026-11-11",
   "github": "https://github.com/lilystockmans/gym-ledger",
-  "notes": ["stub APK built in 9m22s, not installed", "reanimated 4 + worklets installed per plan; Finder Food removed them after a crash, test on phone in Phase 2"]
+  "notes": [
+    "stub APK built in 9m22s, not installed",
+    "reanimated 4 + worklets installed per plan; Finder Food removed them after a crash, test on phone in Phase 2"
+  ],
+  "workers": {
+    "w1-rules": "started",
+    "w2-data": "started",
+    "w3-workout": "started",
+    "w4-plan": "started",
+    "w5-progress": "started"
+  },
+  "look": "approved by Lily 2026-11-11 (100px titles, beige, fixed gradient)"
 }
