@@ -1,0 +1,852 @@
+{
+  "exportedAt": "2026-11-11T09:00:00.000Z",
+  "app": "gym-ledger",
+  "version": 1,
+  "workouts": [
+    {
+      "id": "A",
+      "title": "Full Body A",
+      "subtitle": "handstand, pull-up, dip",
+      "warmup": [
+        "3 min easy bike or treadmill walk",
+        "Leg swings front-to-back, 10 per leg",
+        "Leg swings side-to-side, 10 per leg",
+        "Bodyweight squat x10",
+        "Arm circles x10 each way",
+        "Dead hang 20 sec",
+        "Plank shoulder taps x10",
+        "Wrist: palms flat, fingers forward, rock forward and back x10",
+        "Wrist: fingers pointing back toward knees, rock gently x10",
+        "Wrist: backs of hands on the floor, rock gently x5",
+        "Wrist: hands up, circle the wrists x10 each way"
+      ],
+      "cooldown": [
+        "Hamstring stretch, 30 sec",
+        "Hip flexor lunge, 30 sec",
+        "Butterfly (adductors), 30 sec",
+        "Doorway chest stretch, 30 sec",
+        "Lat stretch, 30 sec",
+        "Calf stretch, 30 sec",
+        "Seated pike stretch 3 x 30 sec (flexibility for the L-sit)"
+      ],
+      "exercises": [
+        {
+          "id": "a-handstand",
+          "name": "Handstand",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 20,
+          "repMax": 20,
+          "restSec": 60,
+          "skill": "Handstand",
+          "unit": "seconds",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Now: feet on a low bench, hands on floor, hips over shoulders"
+        },
+        {
+          "id": "a-lsit",
+          "name": "L-sit",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 10,
+          "repMax": 10,
+          "restSec": 45,
+          "skill": "L-sit",
+          "unit": "seconds",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "Hands on yoga blocks or parallettes. Now: one foot up, alternating"
+        },
+        {
+          "id": "a-pullup",
+          "name": "Assisted Pull-Up (machine)",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 5,
+          "repMax": 6,
+          "restSec": 90,
+          "skill": "Pull-up",
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": true,
+          "notes": "Assist kg from your last log row. Drop 2.5 kg at 3×6 clean"
+        },
+        {
+          "id": "a-dip",
+          "name": "Assisted Dip (machine)",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 5,
+          "repMax": 6,
+          "restSec": 90,
+          "skill": "Dip",
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": true,
+          "notes": "Assist kg from your last log row. Drop 2.5 kg at 3×8 clean"
+        },
+        {
+          "id": "a-pushup",
+          "name": "Push-up",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 8,
+          "repMax": 12,
+          "restSec": 60,
+          "skill": "Push-up",
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Now: bar incline. Lower one notch at 3×12"
+        },
+        {
+          "id": "a-bss",
+          "name": "Bulgarian Split Squat, bodyweight",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 8,
+          "repMax": 8,
+          "restSec": 60,
+          "skill": null,
+          "unit": "reps",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "Back foot on a bench"
+        },
+        {
+          "id": "a-bridge",
+          "name": "Single-Leg Glute Bridge",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 10,
+          "repMax": 10,
+          "restSec": 45,
+          "skill": null,
+          "unit": "reps",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "Glutes and hamstrings"
+        },
+        {
+          "id": "a-hang",
+          "name": "Dead Hang",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 20,
+          "repMax": 30,
+          "restSec": 60,
+          "skill": null,
+          "unit": "seconds",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Grip and forearms"
+        },
+        {
+          "id": "a-calf",
+          "name": "Single-Leg Calf Raise, 3s lower",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 10,
+          "repMax": 10,
+          "restSec": 45,
+          "skill": null,
+          "unit": "reps",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "On a step, hold something for balance"
+        },
+        {
+          "id": "a-cope",
+          "name": "Copenhagen Plank",
+          "block": "Core",
+          "sets": 2,
+          "repMin": 15,
+          "repMax": 15,
+          "restSec": 45,
+          "skill": null,
+          "unit": "seconds",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "Inner thigh. Bottom knee down to start"
+        },
+        {
+          "id": "a-legs",
+          "name": "Seated Leg Lifts",
+          "block": "Core",
+          "sets": 3,
+          "repMin": 10,
+          "repMax": 10,
+          "restSec": 45,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Legs straight, hands next to knees, lift both heels 2 cm"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "title": "Full Body B",
+      "subtitle": "pistol squat, pull-up, row",
+      "warmup": [
+        "3 min easy bike or treadmill walk",
+        "Leg swings front-to-back, 10 per leg",
+        "Leg swings side-to-side, 10 per leg",
+        "Bodyweight squat x10",
+        "Arm circles x10 each way",
+        "Dead hang 20 sec",
+        "Plank shoulder taps x10",
+        "Wrist: palms flat, fingers forward, rock forward and back x10",
+        "Wrist: fingers pointing back toward knees, rock gently x10",
+        "Wrist: backs of hands on the floor, rock gently x5",
+        "Wrist: hands up, circle the wrists x10 each way"
+      ],
+      "cooldown": [
+        "Hamstring stretch, 30 sec",
+        "Hip flexor lunge, 30 sec",
+        "Butterfly (adductors), 30 sec",
+        "Doorway chest stretch, 30 sec",
+        "Lat stretch, 30 sec",
+        "Calf stretch, 30 sec",
+        "Seated pike stretch 3 x 30 sec (flexibility for the L-sit)"
+      ],
+      "exercises": [
+        {
+          "id": "b-handstand",
+          "name": "Handstand",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 20,
+          "repMax": 20,
+          "restSec": 60,
+          "skill": "Handstand",
+          "unit": "seconds",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Second exposure of the week"
+        },
+        {
+          "id": "b-pistol",
+          "name": "Pistol Squat",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 5,
+          "repMax": 5,
+          "restSec": 60,
+          "skill": "Pistol squat",
+          "unit": "reps",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "High box → low box → hold the rack → free"
+        },
+        {
+          "id": "b-lsit",
+          "name": "L-sit",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 10,
+          "repMax": 10,
+          "restSec": 45,
+          "skill": "L-sit",
+          "unit": "seconds",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "Second exposure of the week"
+        },
+        {
+          "id": "b-pullup",
+          "name": "Assisted Pull-Up (machine)",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 5,
+          "repMax": 6,
+          "restSec": 90,
+          "skill": "Pull-up",
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": true,
+          "notes": "Second exposure. Twice a week is what moves the pull-up"
+        },
+        {
+          "id": "b-row",
+          "name": "Inverted Row (Smith machine bar)",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 8,
+          "repMax": 10,
+          "restSec": 60,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Higher bar = easier. Lower the bar one notch at 3×10"
+        },
+        {
+          "id": "b-pike",
+          "name": "Pike Push-Up, hands on bench",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 5,
+          "repMax": 8,
+          "restSec": 60,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Shoulders. Handstand pushing strength"
+        },
+        {
+          "id": "b-slcurl",
+          "name": "Sliding Leg Curl",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 8,
+          "repMax": 8,
+          "restSec": 60,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Lie on your back, heels on a towel, bridge up, slide heels in and out"
+        },
+        {
+          "id": "b-sidelift",
+          "name": "Side-Lying Leg Raise",
+          "block": "Strength",
+          "sets": 2,
+          "repMin": 12,
+          "repMax": 12,
+          "restSec": 45,
+          "skill": null,
+          "unit": "reps",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": "Outer thigh, glute medius"
+        },
+        {
+          "id": "b-hkr",
+          "name": "Hanging Knee Raise",
+          "block": "Core",
+          "sets": 3,
+          "repMin": 8,
+          "repMax": 10,
+          "restSec": 45,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Hip flexors and abs, helps the L-sit"
+        },
+        {
+          "id": "b-tib",
+          "name": "Tibialis Raise",
+          "block": "Core",
+          "sets": 2,
+          "repMin": 15,
+          "repMax": 15,
+          "restSec": 45,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Back against the wall, lift toes"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "title": "Full Body C",
+      "subtitle": "winter third day, the pull-up accelerator",
+      "warmup": [
+        "3 min easy bike or treadmill walk",
+        "Leg swings front-to-back, 10 per leg",
+        "Leg swings side-to-side, 10 per leg",
+        "Bodyweight squat x10",
+        "Arm circles x10 each way",
+        "Dead hang 20 sec",
+        "Plank shoulder taps x10",
+        "Wrist: palms flat, fingers forward, rock forward and back x10",
+        "Wrist: fingers pointing back toward knees, rock gently x10",
+        "Wrist: backs of hands on the floor, rock gently x5",
+        "Wrist: hands up, circle the wrists x10 each way"
+      ],
+      "cooldown": [
+        "Hamstring stretch, 30 sec",
+        "Hip flexor lunge, 30 sec",
+        "Butterfly (adductors), 30 sec",
+        "Doorway chest stretch, 30 sec",
+        "Lat stretch, 30 sec",
+        "Calf stretch, 30 sec",
+        "Seated pike stretch 3 x 30 sec (flexibility for the L-sit)"
+      ],
+      "exercises": [
+        {
+          "id": "c-pullup",
+          "name": "Assisted Pull-Up (machine)",
+          "block": "Strength",
+          "sets": 4,
+          "repMin": 5,
+          "repMax": 6,
+          "restSec": 90,
+          "skill": "Pull-up",
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": true,
+          "notes": "Current assist"
+        },
+        {
+          "id": "c-neg",
+          "name": "Negative Pull-Up, 5s lower",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 3,
+          "repMax": 3,
+          "restSec": 90,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": "Only once assist is under 25 kg"
+        },
+        {
+          "id": "c-dip",
+          "name": "Assisted Dip (machine)",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 6,
+          "repMax": 8,
+          "restSec": 90,
+          "skill": "Dip",
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": true,
+          "notes": "Current assist"
+        },
+        {
+          "id": "c-pushup",
+          "name": "Push-up",
+          "block": "Strength",
+          "sets": 3,
+          "repMin": 8,
+          "repMax": 12,
+          "restSec": 60,
+          "skill": "Push-up",
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": ""
+        },
+        {
+          "id": "c-handstand",
+          "name": "Handstand",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 20,
+          "repMax": 30,
+          "restSec": 60,
+          "skill": "Handstand",
+          "unit": "seconds",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": ""
+        },
+        {
+          "id": "c-lsit",
+          "name": "L-sit",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 10,
+          "repMax": 15,
+          "restSec": 45,
+          "skill": "L-sit",
+          "unit": "seconds",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": ""
+        },
+        {
+          "id": "c-pistol",
+          "name": "Pistol Squat",
+          "block": "Skill",
+          "sets": 3,
+          "repMin": 5,
+          "repMax": 5,
+          "restSec": 60,
+          "skill": "Pistol squat",
+          "unit": "reps",
+          "perSide": true,
+          "usesAssist": false,
+          "notes": ""
+        },
+        {
+          "id": "c-hkr",
+          "name": "Hanging Knee Raise",
+          "block": "Core",
+          "sets": 3,
+          "repMin": 10,
+          "repMax": 10,
+          "restSec": 45,
+          "skill": null,
+          "unit": "reps",
+          "perSide": false,
+          "usesAssist": false,
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "plannedDays": [
+    {
+      "date": "2026-11-12",
+      "workoutId": "A"
+    },
+    {
+      "date": "2026-11-14",
+      "workoutId": "B"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "import-2026-11-02",
+      "date": "2026-11-02",
+      "workoutId": null,
+      "source": "import",
+      "startedAt": null,
+      "finishedAt": null,
+      "easyDay": false,
+      "feel": "Hard",
+      "note": "",
+      "sets": [
+        {
+          "id": "import-2026-11-02-Push-up-0",
+          "exerciseId": null,
+          "name": "Push-up",
+          "skill": "Push-up",
+          "step": "Push-up 2: bench incline",
+          "setIndex": 0,
+          "reps": 8,
+          "seconds": null,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-Push-up-1",
+          "exerciseId": null,
+          "name": "Push-up",
+          "skill": "Push-up",
+          "step": "Push-up 2: bench incline",
+          "setIndex": 1,
+          "reps": 8,
+          "seconds": null,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-Push-up-2",
+          "exerciseId": null,
+          "name": "Push-up",
+          "skill": "Push-up",
+          "step": "Push-up 2: bench incline",
+          "setIndex": 2,
+          "reps": 8,
+          "seconds": null,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-Pull-up-0",
+          "exerciseId": null,
+          "name": "Pull-up",
+          "skill": "Pull-up",
+          "step": "Pull-up 1: assisted machine",
+          "setIndex": 0,
+          "reps": 6,
+          "seconds": null,
+          "assistKg": 30,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-Pull-up-1",
+          "exerciseId": null,
+          "name": "Pull-up",
+          "skill": "Pull-up",
+          "step": "Pull-up 1: assisted machine",
+          "setIndex": 1,
+          "reps": 6,
+          "seconds": null,
+          "assistKg": 30,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-Pull-up-2",
+          "exerciseId": null,
+          "name": "Pull-up",
+          "skill": "Pull-up",
+          "step": "Pull-up 1: assisted machine",
+          "setIndex": 2,
+          "reps": 6,
+          "seconds": null,
+          "assistKg": 30,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-L-sit-0",
+          "exerciseId": null,
+          "name": "L-sit",
+          "skill": "L-sit",
+          "step": "L-sit 2: one foot up alternating",
+          "setIndex": 0,
+          "reps": null,
+          "seconds": 15,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-L-sit-1",
+          "exerciseId": null,
+          "name": "L-sit",
+          "skill": "L-sit",
+          "step": "L-sit 2: one foot up alternating",
+          "setIndex": 1,
+          "reps": null,
+          "seconds": 15,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-02"
+        },
+        {
+          "id": "import-2026-11-02-L-sit-2",
+          "exerciseId": null,
+          "name": "L-sit",
+          "skill": "L-sit",
+          "step": "L-sit 2: one foot up alternating",
+          "setIndex": 2,
+          "reps": null,
+          "seconds": 15,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "import-2026-11-09",
+      "date": "2026-11-09",
+      "workoutId": null,
+      "source": "import",
+      "startedAt": null,
+      "finishedAt": null,
+      "easyDay": false,
+      "feel": "OK",
+      "note": "",
+      "sets": [
+        {
+          "id": "import-2026-11-09-Push-up-0",
+          "exerciseId": null,
+          "name": "Push-up",
+          "skill": "Push-up",
+          "step": "Push-up 2: bench incline",
+          "setIndex": 0,
+          "reps": 10,
+          "seconds": null,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-Push-up-1",
+          "exerciseId": null,
+          "name": "Push-up",
+          "skill": "Push-up",
+          "step": "Push-up 2: bench incline",
+          "setIndex": 1,
+          "reps": 10,
+          "seconds": null,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-Push-up-2",
+          "exerciseId": null,
+          "name": "Push-up",
+          "skill": "Push-up",
+          "step": "Push-up 2: bench incline",
+          "setIndex": 2,
+          "reps": 10,
+          "seconds": null,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-Pull-up-0",
+          "exerciseId": null,
+          "name": "Pull-up",
+          "skill": "Pull-up",
+          "step": "Pull-up 1: assisted machine",
+          "setIndex": 0,
+          "reps": 6,
+          "seconds": null,
+          "assistKg": 30,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-Pull-up-1",
+          "exerciseId": null,
+          "name": "Pull-up",
+          "skill": "Pull-up",
+          "step": "Pull-up 1: assisted machine",
+          "setIndex": 1,
+          "reps": 6,
+          "seconds": null,
+          "assistKg": 30,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-Pull-up-2",
+          "exerciseId": null,
+          "name": "Pull-up",
+          "skill": "Pull-up",
+          "step": "Pull-up 1: assisted machine",
+          "setIndex": 2,
+          "reps": 6,
+          "seconds": null,
+          "assistKg": 30,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-L-sit-0",
+          "exerciseId": null,
+          "name": "L-sit",
+          "skill": "L-sit",
+          "step": "L-sit 2: one foot up alternating",
+          "setIndex": 0,
+          "reps": null,
+          "seconds": 20,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-L-sit-1",
+          "exerciseId": null,
+          "name": "L-sit",
+          "skill": "L-sit",
+          "step": "L-sit 2: one foot up alternating",
+          "setIndex": 1,
+          "reps": null,
+          "seconds": 20,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-09"
+        },
+        {
+          "id": "import-2026-11-09-L-sit-2",
+          "exerciseId": null,
+          "name": "L-sit",
+          "skill": "L-sit",
+          "step": "L-sit 2: one foot up alternating",
+          "setIndex": 2,
+          "reps": null,
+          "seconds": 20,
+          "assistKg": null,
+          "done": true,
+          "doneAt": "2026-11-09"
+        }
+      ]
+    }
+  ],
+  "periodStarts": [
+    "2026-08-03",
+    "2026-09-04",
+    "2026-10-06",
+    "2026-11-07"
+  ],
+  "settings": {
+    "easyDays": 3,
+    "lastExportAt": null,
+    "currentSteps": {
+      "Pull-up": "Pull-up 1: assisted machine",
+      "Dip": "Dip 1: assisted machine",
+      "Push-up": "Push-up 2: bench incline",
+      "Handstand": "Handstand 1: pike hold on low box",
+      "L-sit": "L-sit 2: one foot up alternating",
+      "Pistol squat": "Pistol 1: sit to high box"
+    },
+    "assistKg": {
+      "Pull-up": 30,
+      "Dip": 18
+    },
+    "restVibrate": true,
+    "easyOverrides": []
+  },
+  "skills": [
+    {
+      "skill": "Pull-up",
+      "currentStep": "Pull-up 1: assisted machine",
+      "assistKg": 30,
+      "signal": {
+        "kind": "none",
+        "message": "No signal yet"
+      }
+    },
+    {
+      "skill": "Dip",
+      "currentStep": "Dip 1: assisted machine",
+      "assistKg": 18,
+      "signal": {
+        "kind": "none",
+        "message": "No signal yet"
+      }
+    },
+    {
+      "skill": "Push-up",
+      "currentStep": "Push-up 2: bench incline",
+      "assistKg": null,
+      "signal": {
+        "kind": "none",
+        "message": "No signal yet"
+      }
+    },
+    {
+      "skill": "Handstand",
+      "currentStep": "Handstand 1: pike hold on low box",
+      "assistKg": null,
+      "signal": {
+        "kind": "none",
+        "message": "No signal yet"
+      }
+    },
+    {
+      "skill": "L-sit",
+      "currentStep": "L-sit 2: one foot up alternating",
+      "assistKg": null,
+      "signal": {
+        "kind": "none",
+        "message": "No signal yet"
+      }
+    },
+    {
+      "skill": "Pistol squat",
+      "currentStep": "Pistol 1: sit to high box",
+      "assistKg": null,
+      "signal": {
+        "kind": "none",
+        "message": "No signal yet"
+      }
+    }
+  ]
+}
