@@ -1,6 +1,6 @@
 {
   "project": "gym-ledger",
-  "stage": "phase2-merged-reviewed",
+  "stage": "phase2-installed",
   "completed": [
     "repo+github",
     "scaffold",
@@ -10,7 +10,7 @@
     "gradle-release-stub",
     "wiki"
   ],
-  "next": "Gradle release build of merged app; with Lily's yes install on Pixel; check opens, logs a set, restart keeps data, airplane mode, export. Watch: reanimated 4 startup crash risk",
+  "next": "Lily unlocks phone and runs the 5 checks (opens, logs a set, restart keeps data, airplane mode, export share sheet); then Phase 3 at the gym",
   "date": "2026-11-11",
   "github": "https://github.com/lilystockmans/gym-ledger",
   "notes": [
@@ -30,5 +30,6 @@
     "easy-day override cannot change during the run",
     "Settings title 86-88px because 'Settings' is too wide at 100px",
     "SQLite untested on a phone"
-  ]
+  ],
+  "installed": "2026-11-11 on Pixel 8 via adb, process running, no crash in log (phone was locked)"
 }
