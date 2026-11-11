@@ -1,6 +1,6 @@
 {
   "project": "gym-ledger",
-  "stage": "phase1",
+  "stage": "phase2-merged-reviewed",
   "completed": [
     "repo+github",
     "scaffold",
@@ -10,7 +10,7 @@
     "gradle-release-stub",
     "wiki"
   ],
-  "next": "Wait for W1 to W5 reports, then Phase 2: merge W1 and W2, then W3, W4, W5; run personal rules test locally; build-review; Gradle build",
+  "next": "Gradle release build of merged app; with Lily's yes install on Pixel; check opens, logs a set, restart keeps data, airplane mode, export. Watch: reanimated 4 startup crash risk",
   "date": "2026-11-11",
   "github": "https://github.com/lilystockmans/gym-ledger",
   "notes": [
@@ -24,5 +24,11 @@
     "w4-plan": "started",
     "w5-progress": "started"
   },
-  "look": "approved by Lily 2026-11-11 (100px titles, beige, fixed gradient)"
+  "look": "approved by Lily 2026-11-11 (100px titles, beige, fixed gradient)",
+  "tests": "57 of 57 pass",
+  "open_gaps": [
+    "easy-day override cannot change during the run",
+    "Settings title 86-88px because 'Settings' is too wide at 100px",
+    "SQLite untested on a phone"
+  ]
 }
