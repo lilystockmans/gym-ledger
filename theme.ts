@@ -29,8 +29,8 @@ export const fonts = {
 const tabular: TextStyle = { fontVariant: ["tabular-nums"] };
 
 export const type = {
-  display: { fontFamily: fonts.medium, fontSize: 148, lineHeight: 130, letterSpacing: -4.44, color: colors.accent } as TextStyle,
-  displayOnDark: { fontFamily: fonts.medium, fontSize: 148, lineHeight: 130, letterSpacing: -4.44, color: colors.accentOnDark } as TextStyle,
+  display: { fontFamily: fonts.medium, fontSize: 100, lineHeight: 90, letterSpacing: -3, color: colors.accent } as TextStyle,
+  displayOnDark: { fontFamily: fonts.medium, fontSize: 100, lineHeight: 90, letterSpacing: -3, color: colors.accentOnDark } as TextStyle,
   number: { fontFamily: fonts.medium, fontSize: 40, lineHeight: 44, color: colors.ink, ...tabular } as TextStyle,
   exercise: { fontFamily: fonts.bold, fontSize: 18, lineHeight: 22, color: colors.ink } as TextStyle,
   body: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 18, color: colors.ink } as TextStyle,

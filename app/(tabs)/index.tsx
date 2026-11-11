@@ -19,7 +19,7 @@ export default function Home() {
     <SafeAreaView style={s.screen} edges={["top"]}>
       <ScrollView contentContainerStyle={s.scroll}>
         <Text style={[type.label, { marginTop: 24 }]}>{DAY[now.getDay()]} · {now.getDate()} Nov</Text>
-        <Text style={[type.display, { marginTop: 12 }]}>{w ? w.title.split(" ").join("\n") : ""}</Text>
+        <Text style={[type.display, { marginTop: 12 }]}>{w ? w.title : ""}</Text>
         <Text style={[type.exercise, { marginTop: 20, fontSize: 15 }]}>{w ? w.subtitle : ""}</Text>
         <Text style={[type.labelAccent, { marginTop: 8 }]}>Easy day 2 of 3 · one set fewer</Text>
 

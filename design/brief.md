@@ -22,7 +22,7 @@ No white anywhere. Beige is the background. Off-black for text and buttons.
 
 ## Type
 
-Inter Tight (OFL). Display (screen title): 148 px, weight 500, letter spacing -3%, one per screen, one word per line. About 3x the first version. 148 px is the largest size where "Body" still fits on a 375 px wide phone. Exercise names: 18 px bold (700). Logged numbers 40 px tabular. Labels 12 px uppercase, +6% letter spacing.
+Inter Tight (OFL). Display (screen title): 100 px, weight 500, letter spacing -3%, one per screen, wraps naturally (Lily chose 100 px on 2026-11-11; 148 px was the largest that fits a word per line). Exercise names: 18 px bold (700). Logged numbers 40 px tabular. Labels 12 px uppercase, +6% letter spacing.
 
 ## Background
 
