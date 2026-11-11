@@ -1,1 +1,16 @@
-import { Slot } from "expo-router"; export default function Root() { return <Slot />; }
+import { InterTight_400Regular, InterTight_500Medium, InterTight_600SemiBold, useFonts } from "@expo-google-fonts/inter-tight";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { View } from "react-native";
+import { colors } from "../theme";
+
+export default function Root() {
+  const [loaded] = useFonts({ InterTight_400Regular, InterTight_500Medium, InterTight_600SemiBold });
+  if (!loaded) return <View style={{ flex: 1, backgroundColor: colors.bg }} />;
+  return (
+    <>
+      <StatusBar style="dark" />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
+    </>
+  );
+}

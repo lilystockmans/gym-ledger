@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
+    "start": "node scripts/select-seed.js && expo start",
     "android": "expo run:android",
-    "web": "expo start --web",
-    "test": "tsx --test lib/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "web": "node scripts/select-seed.js && expo start --web",
+    "seed": "node scripts/select-seed.js",
+    "test": "node scripts/select-seed.js && tsx --test lib/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node scripts/select-seed.js"
   },
   "dependencies": {
     "expo": "54.0.34",
@@ -42,6 +44,13 @@
     "tsx": "^4.19.0",
     "typescript": "~5.9.2"
   },
-  "expo": { "install": { "exclude": ["expo", "react-native-svg"] } },
+  "expo": {
+    "install": {
+      "exclude": [
+        "expo",
+        "react-native-svg"
+      ]
+    }
+  },
   "private": true
 }

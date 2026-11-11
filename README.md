@@ -2,6 +2,8 @@
 
 A calisthenics tracker for Android that plans the week, logs every set, and tells you when to move up or when you are stuck.
 
+![Home screen sample](design/shots/phase0-home.jpg)
+
 ## What it does
 
 - **Plan** the week: place Full Body A, B or C on days. The app opens on today's workout.

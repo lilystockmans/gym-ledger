@@ -12,3 +12,4 @@ ios/
 seed/personal.json
 .DS_Store
 .claude/
+seed/active.json
