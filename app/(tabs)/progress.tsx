@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "expo-router";
+import { Title } from "../../components/progress/Title";
 import { SKILLS } from "../../lib/ladders";
 import { getRepo } from "../../lib/repo";
 import { nextAction } from "../../lib/rules";
@@ -38,7 +39,7 @@ export default function Progress() {
   return (
     <SafeAreaView style={s.screen} edges={["top"]}>
       <ScrollView contentContainerStyle={s.scroll}>
-        <Text style={[type.display, { marginTop: 24 }]}>Progress</Text>
+        <Title>Progress</Title>
 
         <Text style={[type.label, { marginTop: 48 }]}>Signals</Text>
         {flagged.length === 0 ? (

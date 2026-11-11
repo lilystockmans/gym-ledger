@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LineChart, shortDate } from "../../components/progress/LineChart";
+import { Title } from "../../components/progress/Title";
 import { SKILLS } from "../../lib/ladders";
 import { getRepo } from "../../lib/repo";
 import type { SetEntry } from "../../lib/types";
@@ -61,7 +62,7 @@ export default function ExerciseHistory() {
     <SafeAreaView style={s.screen} edges={["top"]}>
       <ScrollView contentContainerStyle={s.scroll}>
         <Pressable onPress={() => router.back()} style={s.back} accessibilityRole="button"><Text style={type.labelAccent}>Back</Text></Pressable>
-        <Text style={[type.display, { marginTop: 8 }]} numberOfLines={3} adjustsFontSizeToFit>{title}</Text>
+        <Title>{title}</Title>
         {rows === null ? null : rows.length === 0 ? (
           <Text style={[type.body, { marginTop: 32 }]}>No sets logged for this yet. Log a workout and the chart will show up here.</Text>
         ) : (
