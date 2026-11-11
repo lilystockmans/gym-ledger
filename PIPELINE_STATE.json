@@ -1,0 +1,9 @@
+{
+  "project": "gym-ledger",
+  "stage": "phase0",
+  "completed": ["repo+github", "scaffold", "contracts", "theme", "sample-home-web", "gradle-release-stub", "wiki"],
+  "next": "Lily approves the look, then scrum master starts workers W1 to W5 (Phase 1)",
+  "date": "2026-11-11",
+  "github": "https://github.com/lilystockmans/gym-ledger",
+  "notes": ["stub APK built in 9m22s, not installed", "reanimated 4 + worklets installed per plan; Finder Food removed them after a crash, test on phone in Phase 2"]
+}

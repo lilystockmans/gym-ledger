@@ -9,7 +9,8 @@
     "seed": "node scripts/select-seed.js",
     "test": "node scripts/select-seed.js && tsx --test lib/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "postinstall": "node scripts/select-seed.js"
+    "postinstall": "node scripts/select-seed.js",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "expo": "54.0.34",
