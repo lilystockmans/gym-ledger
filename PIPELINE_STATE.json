@@ -1,6 +1,6 @@
 {
   "project": "gym-ledger",
-  "stage": "phase2-installed",
+  "stage": "phase3-phone-feedback",
   "completed": [
     "repo+github",
     "scaffold",
@@ -31,5 +31,21 @@
     "Settings title 86-88px because 'Settings' is too wide at 100px",
     "SQLite untested on a phone"
   ],
-  "installed": "2026-11-11 on Pixel 8 via adb, process running, no crash in log (phone was locked)"
+  "installed": "2026-11-11 on Pixel 8 via adb, process running, no crash in log (phone was locked)",
+  "phone_checks_2026-11-11": {
+    "open": "works",
+    "restart keeps data": "works",
+    "airplane mode": "works",
+    "home button": "works",
+    "settings link": "works",
+    "no rest timer": "works",
+    "keyboard on kg field": "works",
+    "export share sheet": "works"
+  },
+  "todo_tomorrow": [
+    "Today screen: the 'Start a new one' / Continue buttons overlap the exercise list text and are hard to read. Give the bottom bar a background or let the list scroll above it.",
+    "Run screen: add a way to go back to the previous exercise (and edit a ticked set) after a wrong entry.",
+    "Run screen: the bottom panel overlaps other text when the keyboard is open. Give it a background or move the content up and let it scroll.",
+    "Open items: easy-day override cannot change during a run; Settings title is 88px; then Phase 3 at the gym"
+  ]
 }
