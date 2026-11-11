@@ -1,0 +1,11 @@
+{
+  "periodStarts": ["2026-08-03", "2026-09-04", "2026-10-06", "2026-11-07"],
+  "history": [
+    { "date": "2026-11-02", "skill": "Push-up", "step": "Push-up 2: bench incline", "sets": 3, "reps": 8, "seconds": null, "assistKg": null, "feel": "OK" },
+    { "date": "2026-11-02", "skill": "Pull-up", "step": "Pull-up 1: assisted machine", "sets": 3, "reps": 6, "seconds": null, "assistKg": 30, "feel": "OK" },
+    { "date": "2026-11-02", "skill": "L-sit", "step": "L-sit 2: one foot up alternating", "sets": 3, "reps": null, "seconds": 15, "assistKg": null, "feel": "Hard" },
+    { "date": "2026-11-09", "skill": "Push-up", "step": "Push-up 2: bench incline", "sets": 3, "reps": 10, "seconds": null, "assistKg": null, "feel": "OK" },
+    { "date": "2026-11-09", "skill": "Pull-up", "step": "Pull-up 1: assisted machine", "sets": 3, "reps": 6, "seconds": null, "assistKg": 30, "feel": "OK" },
+    { "date": "2026-11-09", "skill": "L-sit", "step": "L-sit 2: one foot up alternating", "sets": 3, "reps": null, "seconds": 20, "assistKg": null, "feel": "OK" }
+  ]
+}
