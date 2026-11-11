@@ -68,7 +68,7 @@ export default function Home() {
             <Text style={[type.exercise, { marginTop: 20, fontSize: 15 }]}>{w.subtitle}</Text>
             {anyEasy ? <Text style={[type.labelAccent, { marginTop: 8 }]}>Easy day · one set fewer. Tap a set count to switch back.</Text> : null}
             <View style={{ height: 40 }} />
-            <Text style={type.label}>{planned ? "Planned for today" : "Pick a workout"}</Text>
+            <Text style={type.label}>{planned ? "Planned for today" : "Your pick"}</Text>
             {rows.map(({ e, p }) => (
               <Pressable key={e.id} style={s.row} onPress={() => (p.easy || full.has(e.id) ? toggleFull(e.id) : undefined)}>
                 <Text style={[type.exercise, { flex: 1 }]}>{e.name}</Text>
@@ -78,8 +78,8 @@ export default function Home() {
           </>
         ) : (
           <>
-            <Text style={[type.display, { marginTop: 12 }]}>Pick a workout</Text>
-            <Text style={[type.muted, { marginTop: 20 }]}>Nothing is planned for today.</Text>
+            <Text style={[type.display, { marginTop: 12 }]}>Today</Text>
+            <Text style={[type.muted, { marginTop: 20 }]}>Nothing is planned. Pick a workout.</Text>
           </>
         )}
         {!planned ? (
@@ -115,5 +115,5 @@ const s = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "transparent" },
   scroll: { paddingHorizontal: space.margin },
   row: { flexDirection: "row", alignItems: "center", minHeight: 56, borderBottomWidth: 1, borderBottomColor: colors.surface },
-  bar: { position: "absolute", left: 0, right: 0, bottom: 64, padding: space.margin },
+  bar: { position: "absolute", left: 0, right: 0, bottom: 64, padding: space.margin, backgroundColor: "rgba(216,214,201,0.94)" },
 });

@@ -2,7 +2,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Background } from "../../components/Background";
+import { RunBackground as Background } from "../../components/workout/RunBackground";
 import { RestTimer } from "../../components/workout/RestTimer";
 import { PrimaryButton, TextButton, TickList } from "../../components/workout/ui";
 import { rangeText } from "../../components/workout/util";
@@ -109,7 +109,7 @@ export default function Run() {
           <>
             <ScrollView contentContainerStyle={s.pad}>
               <Text style={[type.label, { marginTop: 24 }]}>{phase === "warmup" ? "Before you start" : "After the last set"}</Text>
-              <Text style={[type.display, { marginTop: 12, marginBottom: 32 }]}>{phase === "warmup" ? "Warm-up" : "Cool-down"}</Text>
+              <Text style={[type.display, { marginTop: 12, marginBottom: 32 }]}>{phase === "warmup" ? "Warm up" : "Cool down"}</Text>
               {phase === "warmup" ? (
                 <TickList items={workout.warmup} ticked={warm} onToggle={toggle(warm, setWarm)} />
               ) : (

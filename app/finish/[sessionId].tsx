@@ -35,7 +35,7 @@ export default function Finish() {
   const done = session.sets.filter((x) => x.done).length;
   const save = async () => {
     await getRepo().saveSession({ ...session, finishedAt: new Date().toISOString(), feel, note: note.trim() });
-    router.replace("/");
+    if (router.canDismiss()) router.dismissAll(); else router.replace("/");
   };
 
   return (
