@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Background } from "../../components/Background";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Btn, Field, Rule, Stepper, TextBtn } from "../../components/plan/ui";
 import { getRepo } from "../../lib/repo";
@@ -97,6 +97,7 @@ export default function Editor() {
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
     <Background />
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin, paddingBottom: 160 }} keyboardShouldPersistTaps="handled">
         <TextBtn label="Back" onPress={() => router.back()} />
         <Text style={[type.display, { marginTop: 8 }]}>{w.title}</Text>
@@ -184,6 +185,7 @@ export default function Editor() {
         {saved ? <Text style={[type.labelAccent, { marginBottom: 8 }]}>Saved</Text> : null}
         <Btn label="Save" onPress={save} />
       </View>
+    </KeyboardAvoidingView>
     </SafeAreaView>
     </View>
   );

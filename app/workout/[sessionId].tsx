@@ -1,9 +1,8 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RunBackground as Background } from "../../components/workout/RunBackground";
-import { RestTimer } from "../../components/workout/RestTimer";
 import { PrimaryButton, TextButton, TickList } from "../../components/workout/ui";
 import { rangeText } from "../../components/workout/util";
 import { getRepo } from "../../lib/repo";
@@ -24,9 +23,16 @@ export default function Run() {
   const [idx, setIdx] = useState(0);
   const [warm, setWarm] = useState<Set<number>>(new Set());
   const [cool, setCool] = useState<Set<number>>(new Set());
-  const [rest, setRest] = useState<{ sec: number; next: string } | null>(null);
+  const [kb, setKb] = useState(0);
   const [assistText, setAssistText] = useState("");
   const [history, setHistory] = useState<Session[]>([]);
+
+  // Lift the bottom panel above the keyboard so the typed number stays visible.
+  useEffect(() => {
+    const a = Keyboard.addListener("keyboardDidShow", (e) => setKb(e.endCoordinates.height));
+    const b = Keyboard.addListener("keyboardDidHide", () => setKb(0));
+    return () => { a.remove(); b.remove(); };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -106,10 +112,6 @@ export default function Run() {
     if (left === 0) {
       if (target >= 0) setIdx(target); else setPhase("cooldown");
     }
-    // Rest only when another set or exercise follows. After the last one the cool-down comes next.
-    if (left > 0 || target >= 0) {
-      setRest({ sec: ex.restSec, next: left > 0 ? ex.name : workout.exercises[target].name });
-    }
   };
 
   const toggle = (set: Set<number>, setter: (s: Set<number>) => void) => (i: number) => {
@@ -124,6 +126,9 @@ export default function Run() {
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <Background />
       <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ paddingHorizontal: space.margin, paddingTop: 4 }}>
+          <TextButton label="Home" onPress={() => router.replace("/")} />
+        </View>
         {phase === "warmup" || phase === "cooldown" ? (
           <>
             <ScrollView contentContainerStyle={s.pad}>
@@ -153,7 +158,7 @@ export default function Run() {
             <ScrollView contentContainerStyle={s.pad}>
               <Text style={[type.label, { marginTop: 24 }]}>{ex.block} · {idx + 1} of {workout.exercises.length}</Text>
               <Text style={[type.exercise, { fontSize: 30, lineHeight: 34, marginTop: 12 }]}>{ex.name}</Text>
-              <Text style={[type.muted, { marginTop: 8 }]}>Target {rangeText(ex)}. Rest {ex.restSec} s.</Text>
+              <Text style={[type.muted, { marginTop: 8 }]}>Target {rangeText(ex)}.</Text>
               {ex.notes ? <Text style={[type.muted, { marginTop: 8 }]}>{ex.notes}</Text> : null}
               {signal && signal.kind !== "none" ? <Text style={[type.labelAccent, { marginTop: 8 }]}>{signal.message}</Text> : null}
               <TextButton label="History" onPress={() => router.push(`/exercise/${encodeURIComponent(ex.skill ?? ex.id)}`)} color={colors.muted} />
@@ -169,7 +174,7 @@ export default function Run() {
               ))}
               <View style={{ height: 380 }} />
             </ScrollView>
-            <View style={s.panel}>
+            <View style={[s.panel, { bottom: kb }]}>
               {active ? (
                 <>
                   <Text style={type.label}>Set {exSets.indexOf(active) + 1} of {exSets.length}{ex.perSide ? " · each side" : ""}</Text>
@@ -211,7 +216,6 @@ export default function Run() {
           </>
         ) : null}
       </SafeAreaView>
-      {rest ? <RestTimer seconds={rest.sec} vibrate={settings.restVibrate} next={rest.next} onDone={() => setRest(null)} /> : null}
     </View>
   );
 }
@@ -220,7 +224,7 @@ const s = StyleSheet.create({
   pad: { paddingHorizontal: space.margin },
   bar: { position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin },
   setRow: { flexDirection: "row", alignItems: "center", minHeight: 48, borderBottomWidth: 1, borderBottomColor: colors.surface },
-  panel: { position: "absolute", left: 0, right: 0, bottom: 0, paddingHorizontal: space.margin, paddingBottom: 12, paddingTop: 12 },
+  panel: { position: "absolute", left: 0, right: 0, paddingHorizontal: space.margin, paddingBottom: 12, paddingTop: 12 },
   stepper: { flexDirection: "row", alignItems: "center", marginVertical: 4 },
   pm: { width: 72, height: 72, borderRadius: 4, borderWidth: 2, borderColor: colors.ink, alignItems: "center", justifyContent: "center" },
   pmText: { fontFamily: fonts.medium, fontSize: 40, lineHeight: 44, color: colors.ink },

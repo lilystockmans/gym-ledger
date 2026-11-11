@@ -2,7 +2,7 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { PrimaryButton } from "../../components/workout/ui";
+import { PrimaryButton, TextButton } from "../../components/workout/ui";
 import { buildSession, plannedSets, rangeText, todayIso } from "../../components/workout/util";
 import { getRepo } from "../../lib/repo";
 import type { Session, Settings, Workout, WorkoutId } from "../../lib/types";
@@ -72,7 +72,10 @@ export default function Home() {
   return (
     <SafeAreaView style={s.screen} edges={["top"]}>
       <ScrollView contentContainerStyle={s.scroll}>
-        <Text style={[type.label, { marginTop: 24 }]}>{DAY[now.getDay()]} · {now.getDate()} {MON[now.getMonth()]}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
+          <Text style={type.label}>{DAY[now.getDay()]} · {now.getDate()} {MON[now.getMonth()]}</Text>
+          <TextButton label="Settings" onPress={() => router.push("/settings")} />
+        </View>
         {w ? (
           <>
             <Text style={[type.display, { marginTop: 12 }]}>{w.title}</Text>

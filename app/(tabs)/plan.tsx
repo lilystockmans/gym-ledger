@@ -38,7 +38,8 @@ export default function Plan() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }} edges={["top"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin, paddingBottom: 140 }}>
-        <Text style={[type.display, { marginTop: 24 }]}>Plan</Text>
+        <View style={{ alignItems: "flex-end", marginTop: 8 }}><TextBtn label="Settings" onPress={() => router.push("/settings")} /></View>
+        <Text style={[type.display, { marginTop: 0 }]}>Plan</Text>
 
         <View style={s.weekRow}>
           <Pressable accessibilityRole="button" style={s.nav} onPress={() => setMonday(addDays(monday, -7))}><Text style={type.exercise}>Previous</Text></Pressable>

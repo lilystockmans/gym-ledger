@@ -1,7 +1,7 @@
 import { useRouter } from "expo-router";
 import { Background } from "../components/Background";
 import { useCallback, useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Btn, Field, Rule, Stepper, TextBtn, iso, niceDate } from "../components/plan/ui";
 import { shareExport } from "../lib/export";
@@ -60,6 +60,7 @@ export default function SettingsScreen() {
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
     <Background />
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin, paddingBottom: 80 }} keyboardShouldPersistTaps="handled">
         <TextBtn label="Back" onPress={() => router.back()} />
         <Text style={[type.display, { marginTop: 8, fontSize: 88, lineHeight: 100 }]} numberOfLines={1}>Settings</Text>
@@ -106,6 +107,7 @@ export default function SettingsScreen() {
           {settings.lastExportAt ? `Last export ${daysAgo(settings.lastExportAt)} days ago` : "Never exported"}
         </Text>
       </ScrollView>
+    </KeyboardAvoidingView>
     </SafeAreaView>
     </View>
   );
