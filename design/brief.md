@@ -2,31 +2,36 @@
 
 Reference: `design/reference/palette.jpg` (orange replaced by green #73795D).
 
-## Colour tokens (in `theme.ts`)
+## Colour tokens (in `theme.ts`), revised 2026-11-11 after Lily's feedback
+
+No white anywhere. Beige is the background. Off-black for text and buttons.
 
 | Token | Hex | Use |
 |---|---|---|
-| bg | #F5F5F5 | Main background |
-| surface | #D8D6C9 | Cards, planner cells, 1 px rules, gradient end |
-| ink | #303236 | All small text and numbers (12.2:1 on bg) |
-| muted | #52555A | Secondary small text (7.0:1) |
-| accent | #73795D | Big headings, buttons, ticks, chart lines. Never small text, never on charcoal (4.2:1 on bg) |
-| accentText | #5C6149 | Small green text on light (5.9:1) |
-| accentOnDark | #9CA37F | Green on charcoal (4.9:1) |
+| bg | #D8D6C9 | Beige. Main background |
+| surface | #C3C1B1 | Darker beige: 1 px rules, cards |
+| ink | #303236 | Off-black: text, numbers, primary buttons |
+| muted | #52555A | Secondary text |
+| accent | #73795D | Giant titles, ticks, chart lines. Not for small text |
+| accentText | #4F543E | Small green text |
+| pool | #868C6C | Gradient pool colour. Lighter than accent so ink stays readable on it |
+| glow | #E6E4D8 | Light highlight in the gradient, top right |
+| onAccent / onDark | #E4E2D6 | Light beige text on dark buttons and the dark screens |
 | dark | #303236 | Rest timer and finish screen background |
+| accentOnDark | #9CA37F | Green on charcoal |
 
 ## Type
 
-Inter Tight (OFL). Display 64 px (up to 80 on short words), weight 500, letter spacing -3%, one per screen. Logged numbers 40 px tabular. Body and labels 12 to 13 px, labels uppercase with +6% letter spacing.
+Inter Tight (OFL). Display (screen title): 148 px, weight 500, letter spacing -3%, one per screen, one word per line. About 3x the first version. 148 px is the largest size where "Body" still fits on a 375 px wide phone. Exercise names: 18 px bold (700). Logged numbers 40 px tabular. Labels 12 px uppercase, +6% letter spacing.
+
+## Background
+
+`components/Background.tsx`, mounted once in `app/(tabs)/_layout.tsx`. It is fixed: it does not move when a screen scrolls or the tab changes. Beige base, a fluid organic green pool in the lower left that melts diagonally to the upper right, a light glow top right (like `design/reference/palette.jpg`). Screens on top must keep a transparent background (no `backgroundColor` on tab screens). The tab bar is a translucent beige.
 
 ## Layout
 
-24 px side margin, much empty space, left-aligned, 1 px rules in `surface` instead of boxes and shadows. No icons where a word fits.
+24 px side margin, much empty space, left-aligned, 1 px rules in `surface` instead of boxes and shadows. No icons where a word fits. Primary buttons are off-black with light beige text.
 
 ## Gym safety
 
 Tap targets at least 56 px high. Set tick and +/- buttons in the bottom half of the screen. Numbers always big. Rest timer fills the screen in `dark`.
-
-## Gradient
-
-One soft radial blob per screen at most (`components/Blob.tsx`): behind the Home heading and on the finish screen.

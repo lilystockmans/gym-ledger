@@ -4,7 +4,7 @@ import { colors, type } from "../../theme";
 
 export default function Screen() {
   return (
-    <View style={{ flex: 1, backgroundColor: colors.bg, padding: 24, justifyContent: "center" }}>
+    <View style={{ flex: 1, backgroundColor: "transparent", padding: 24, justifyContent: "center" }}>
       <Text style={type.label}>Progress: stub (W5)</Text>
     </View>
   );
