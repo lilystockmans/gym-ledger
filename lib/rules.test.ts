@@ -90,8 +90,14 @@ test("13 days at the same load is not stuck", () => {
   assert.equal(isStuck("Pull-up", h, settings(), "2026-10-14"), false);
 });
 
-test("exactly 14 days is stuck", () => {
+test("a single session is never stuck", () => {
   const h = [pull("2026-10-01", 5)];
+  assert.equal(isStuck("Pull-up", h, settings(), "2026-11-15"), false);
+  assert.equal(nextAction("Pull-up", h, settings(), "2026-11-15").kind, "none");
+});
+
+test("exactly 14 days is stuck", () => {
+  const h = [pull("2026-10-01", 5), pull("2026-10-05", 5)];
   assert.equal(isStuck("Pull-up", h, settings(), "2026-10-15"), true);
 });
 
@@ -108,7 +114,7 @@ test("a new assist kg restarts the stuck clock", () => {
 
 test("stuck count works across a daylight saving change", () => {
   // Belgium clocks changed on 2026-10-25
-  const h = [pull("2026-10-20", 5)];
+  const h = [pull("2026-10-20", 5), pull("2026-10-22", 5)];
   assert.equal(isStuck("Pull-up", h, settings(), "2026-11-03"), true);
   assert.equal(isStuck("Pull-up", h, settings(), "2026-11-02"), false);
 });
@@ -119,13 +125,13 @@ test("no history is not stuck", () => {
 
 // ---- nextAction ----
 
-test("nextAction ready on a machine skill says drop one notch", () => {
+test("nextAction ready on a machine skill says use less assist", () => {
   const h = [pull("2026-10-01", 6), pull("2026-10-05", 6)];
   const sig = nextAction("Pull-up", h, settings(), "2026-10-06");
   assert.equal(sig.kind, "ready");
   assert.equal(sig.skill, "Pull-up");
-  assert.match(sig.message, /drop one notch/i);
-  assert.match(sig.message, /2\.5 kg/);
+  assert.match(sig.message, /less assist/i);
+  assert.doesNotMatch(sig.message, /2\.5/); // the app never invents a kg value
 });
 
 test("nextAction ready on a plain skill names the next step", () => {
@@ -136,21 +142,21 @@ test("nextAction ready on a plain skill names the next step", () => {
 });
 
 test("nextAction stuck first asks for +1 rep per set", () => {
-  const h = [pull("2026-10-01", 5)];
+  const h = [pull("2026-10-01", 5), pull("2026-10-05", 5)];
   const sig = nextAction("Pull-up", h, settings(), "2026-10-16");
   assert.equal(sig.kind, "stuck");
   assert.match(sig.message, /\+1 rep per set/);
 });
 
 test("nextAction stuck at 3 weeks suggests a smaller jump", () => {
-  const h = [pull("2026-10-01", 5)];
+  const h = [pull("2026-10-01", 5), pull("2026-10-05", 5)];
   const sig = nextAction("Pull-up", h, settings(), "2026-10-23");
   assert.equal(sig.kind, "stuck");
   assert.match(sig.message, /smaller/i);
 });
 
 test("nextAction stuck at 4 weeks suggests a lighter week", () => {
-  const h = [pull("2026-10-01", 5)];
+  const h = [pull("2026-10-01", 5), pull("2026-10-05", 5)];
   const sig = nextAction("Pull-up", h, settings(), "2026-10-29");
   assert.equal(sig.kind, "stuck");
   assert.match(sig.message, /lighter week/i);
@@ -281,4 +287,9 @@ test("prefill for an accessory matches by exercise id or name", () => {
 test("prefill takes the newest session even when history is unsorted", () => {
   const h = [pull("2026-10-05", 6, 25), pull("2026-10-01", 4, 25)];
   assert.equal(prefill(pullEx, h, settings()).reps, 6);
+});
+
+test("prefill: the assist in settings wins over the last session", () => {
+  const h = [pull("2026-10-05", 6, 25)];
+  assert.deepEqual(prefill(pullEx, h, settings({ assistKg: { "Pull-up": 22.5 } })), { reps: 6, seconds: null, assistKg: 22.5 });
 });

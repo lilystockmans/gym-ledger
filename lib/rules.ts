@@ -97,7 +97,8 @@ export function prefill(
   const first = last?.sets[0];
 
   const fallbackAssist = exercise.usesAssist && exercise.skill ? settings.assistKg[exercise.skill] ?? null : null;
-  const assistKg = exercise.usesAssist ? first?.assistKg ?? fallbackAssist : null;
+  // The current assist in settings wins: Lily's typed kg (run screen) or her change in the editor.
+  const assistKg = exercise.usesAssist ? fallbackAssist ?? first?.assistKg ?? null : null;
   const num = exercise.unit === "reps" ? first?.reps : first?.seconds;
   const n = num ?? exercise.repMin;
   return {
@@ -123,7 +124,8 @@ function daysWithoutGain(skill: string, history: Session[], settings: Settings, 
   const sk = findSkill(skill);
   if (!sk) return null;
   const { atStep } = visitsAtCurrent(sk, history, settings);
-  if (atStep.length === 0) return null;
+  // A plateau needs at least 2 sessions at the same step and load.
+  if (atStep.length < 2) return null;
   let best = -Infinity;
   let sinceDate = atStep[0].date;
   for (const v of atStep) {
@@ -186,7 +188,7 @@ export function nextAction(skill: string, history: Session[], settings: Settings
       return {
         skill,
         kind: "ready",
-        message: `${skill}: ready to move up. Hit the target twice in a row. Next time drop one notch (2.5 kg less assist) and type the new kg.`,
+        message: `${skill}: ready to move up. Hit the target twice in a row. Next time use one notch less assist than last time and type the new kg.`,
       };
     }
     const next = sk.steps[stepIndex + 1];

@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
+import { Background } from "../components/Background";
 import { useCallback, useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -43,7 +44,12 @@ export default function SettingsScreen() {
     setPast("");
   }
   async function doExport() {
-    await shareExport(getRepo());
+    try {
+      await shareExport(getRepo());
+      setMsg("");
+    } catch (e) {
+      setMsg(e instanceof Error ? `Export did not work: ${e.message}` : "Export did not work.");
+    }
     await load();
   }
 
@@ -51,7 +57,9 @@ export default function SettingsScreen() {
   const recent = starts.slice().reverse();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }} edges={["top", "bottom"]}>
+    <View style={{ flex: 1, backgroundColor: colors.bg }}>
+    <Background />
+    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin, paddingBottom: 80 }} keyboardShouldPersistTaps="handled">
         <TextBtn label="Back" onPress={() => router.back()} />
         <Text style={[type.display, { marginTop: 8, fontSize: 88, lineHeight: 100 }]} numberOfLines={1}>Settings</Text>
@@ -99,5 +107,6 @@ export default function SettingsScreen() {
         </Text>
       </ScrollView>
     </SafeAreaView>
+    </View>
   );
 }

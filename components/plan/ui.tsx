@@ -96,7 +96,7 @@ export const s = StyleSheet.create({
   ghost: { borderWidth: 1, borderColor: colors.ink },
   textBtn: { minHeight: space.tap, justifyContent: "center" },
   input: {
-    minHeight: 48, fontFamily: fonts.medium, fontSize: 18, color: colors.ink,
+    minHeight: 56, fontFamily: fonts.medium, fontSize: 18, color: colors.ink,
     borderBottomWidth: 1, borderBottomColor: colors.ink, paddingVertical: 8, backgroundColor: "transparent",
   },
   step: { width: space.tap, height: space.tap, alignItems: "center", justifyContent: "center" },

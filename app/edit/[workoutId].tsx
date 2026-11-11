@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { Background } from "../../components/Background";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -50,6 +51,7 @@ export default function Editor() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [open, setOpen] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [assistDraft, setAssistDraft] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const r = getRepo();
@@ -70,11 +72,7 @@ export default function Editor() {
     touch();
     const sk = SKILLS.find((k) => k.name === skill);
     if (!sk) return;
-    if (sk.usesAssist) {
-      const cur = settings.assistKg[skill] ?? START[skill]?.assistKg ?? 0;
-      setSettings({ ...settings, assistKg: { ...settings.assistKg, [skill]: Math.max(0, cur - 2.5) } });
-      return;
-    }
+    if (sk.usesAssist) return; // assist kg is typed, never computed
     const idx = sk.steps.findIndex((s) => s.name === stepOf(skill));
     const nxt = sk.steps[Math.min(sk.steps.length - 1, idx + 1)];
     setSettings({ ...settings, currentSteps: { ...settings.currentSteps, [skill]: nxt.name } });
@@ -96,7 +94,9 @@ export default function Editor() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }} edges={["top", "bottom"]}>
+    <View style={{ flex: 1, backgroundColor: colors.bg }}>
+    <Background />
+    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin, paddingBottom: 160 }} keyboardShouldPersistTaps="handled">
         <TextBtn label="Back" onPress={() => router.back()} />
         <Text style={[type.display, { marginTop: 8 }]}>{w.title}</Text>
@@ -121,18 +121,31 @@ export default function Editor() {
               {sk ? (
                 <View style={{ paddingBottom: 8 }}>
                   {sk.usesAssist ? (
-                    <Text style={type.labelAccent}>Assist now {settings.assistKg[sk.name] ?? START[sk.name]?.assistKg ?? 0} kg</Text>
+                    <View>
+                      <Text style={type.labelAccent}>Assist now. Drop one notch when you are ready, then type the new kg.</Text>
+                      <Field
+                        label="Assist kg"
+                        keyboardType="decimal-pad"
+                        value={assistDraft[sk.name] ?? String(settings.assistKg[sk.name] ?? START[sk.name]?.assistKg ?? "")}
+                        onChangeText={(t) => {
+                          touch();
+                          setAssistDraft({ ...assistDraft, [sk.name]: t });
+                          const n = Number(t.replace(",", "."));
+                          if (t.trim() !== "" && !isNaN(n)) setSettings({ ...settings, assistKg: { ...settings.assistKg, [sk.name]: n } });
+                        }}
+                      />
+                    </View>
                   ) : (
                     <Text style={type.labelAccent}>Step now: {sk.steps.find((s) => s.name === stepOf(sk.name))?.short ?? stepOf(sk.name)}</Text>
                   )}
-                  <TextBtn label={sk.usesAssist ? "Drop one notch" : "Move up"} onPress={() => moveUp(sk.name)} />
+                  {sk.usesAssist ? null : <TextBtn label="Move up" onPress={() => moveUp(sk.name)} />}
                 </View>
               ) : null}
 
               <View style={{ flexDirection: "row" }}>
-                <TextBtn label="Move up" onPress={() => { touch(); setW({ ...w, exercises: moveItem(w.exercises, i, -1) }); }} />
+                <TextBtn label="Earlier" onPress={() => { touch(); setW({ ...w, exercises: moveItem(w.exercises, i, -1) }); }} />
                 <View style={{ width: 24 }} />
-                <TextBtn label="Move down" onPress={() => { touch(); setW({ ...w, exercises: moveItem(w.exercises, i, 1) }); }} />
+                <TextBtn label="Later" onPress={() => { touch(); setW({ ...w, exercises: moveItem(w.exercises, i, 1) }); }} />
                 <View style={{ width: 24 }} />
                 <TextBtn label="Remove" danger onPress={() => { touch(); setW({ ...w, exercises: w.exercises.filter((_, k) => k !== i) }); }} />
               </View>
@@ -167,10 +180,11 @@ export default function Editor() {
         <Lines title="Warm-up" lines={w.warmup} onChange={(l) => { touch(); setW({ ...w, warmup: l }); }} />
         <Lines title="Cool-down" lines={w.cooldown} onChange={(l) => { touch(); setW({ ...w, cooldown: l }); }} />
       </ScrollView>
-      <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin, backgroundColor: colors.bg }}>
+      <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin }}>
         {saved ? <Text style={[type.labelAccent, { marginBottom: 8 }]}>Saved</Text> : null}
         <Btn label="Save" onPress={save} />
       </View>
     </SafeAreaView>
+    </View>
   );
 }

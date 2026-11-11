@@ -1,7 +1,7 @@
 import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { PrimaryButton } from "../../components/workout/ui";
 import { buildSession, plannedSets, rangeText, todayIso } from "../../components/workout/util";
 import { getRepo } from "../../lib/repo";
@@ -21,6 +21,8 @@ export default function Home() {
   const [periods, setPeriods] = useState<string[]>([]);
   const [full, setFull] = useState<Set<string>>(new Set());
   const today = todayIso();
+  const insets = useSafeAreaInsets();
+  const starting = useRef(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -33,6 +35,7 @@ export default function Home() {
         ]);
         if (!live) return;
         setWorkouts(w); setPlanned(p[0]?.workoutId ?? null); setSessions(ss); setSettings(st); setPeriods(ps);
+        setFull(new Set(st.easyOverrides.filter((k) => k.startsWith(`${today}:`)).map((k) => k.slice(today.length + 1))));
       })();
       return () => { live = false; };
     }, [today]),
@@ -44,10 +47,12 @@ export default function Home() {
   const unfinished = sessions.filter((x) => x.date === today && x.source === "app" && !x.finishedAt).pop() ?? null;
 
   const start = async () => {
-    if (!w || !settings) return;
+    if (!w || !settings || starting.current) return;
+    starting.current = true;
     const s = buildSession(w, today, sessions, settings, periods, full);
     await getRepo().saveSession(s);
     router.push(`/workout/${s.id}`);
+    setTimeout(() => { starting.current = false; }, 1500);
   };
 
   const rows = w && settings ? w.exercises.map((e) => ({ e, p: plannedSets(e, today, periods, settings, full) })) : [];
@@ -56,6 +61,12 @@ export default function Home() {
     const n = new Set(full);
     if (n.has(eid)) n.delete(eid); else n.add(eid);
     setFull(n);
+    // Stored for today, so the choice survives a restart.
+    if (settings) {
+      const others = settings.easyOverrides.filter((k) => !k.startsWith(`${today}:`));
+      const mine = [...n].map((x) => `${today}:${x}`);
+      getRepo().saveSettings({ easyOverrides: [...others, ...mine] }).then(setSettings);
+    }
   };
 
   return (
@@ -86,7 +97,7 @@ export default function Home() {
           <View style={{ marginTop: 32 }}>
             {workouts.map((x) => (
               <Pressable key={x.id} style={s.row} onPress={() => setPicked(x.id)} accessibilityRole="button">
-                <Text style={[type.exercise, { flex: 1, fontFamily: picked === x.id ? fonts.bold : fonts.regular }]}>{x.title}</Text>
+                <Text style={[type.exercise, { flex: 1 }]}>{x.title}</Text>
                 <Text style={type.muted}>{picked === x.id ? "Chosen" : x.subtitle}</Text>
               </Pressable>
             ))}
@@ -94,7 +105,7 @@ export default function Home() {
         ) : null}
         <View style={{ height: unfinished ? 260 : 190 }} />
       </ScrollView>
-      <View style={s.bar}>
+      <View style={[s.bar, { bottom: 64 + insets.bottom }]}>
         {unfinished ? (
           <PrimaryButton label="Continue" onPress={() => router.push(`/workout/${unfinished.id}`)} style={{ marginBottom: 8 }} />
         ) : null}
@@ -115,5 +126,5 @@ const s = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "transparent" },
   scroll: { paddingHorizontal: space.margin },
   row: { flexDirection: "row", alignItems: "center", minHeight: 56, borderBottomWidth: 1, borderBottomColor: colors.surface },
-  bar: { position: "absolute", left: 0, right: 0, bottom: 64, padding: space.margin, backgroundColor: "rgba(216,214,201,0.94)" },
+  bar: { position: "absolute", left: 0, right: 0, padding: space.margin },
 });

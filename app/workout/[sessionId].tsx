@@ -7,7 +7,9 @@ import { RestTimer } from "../../components/workout/RestTimer";
 import { PrimaryButton, TextButton, TickList } from "../../components/workout/ui";
 import { rangeText } from "../../components/workout/util";
 import { getRepo } from "../../lib/repo";
-import type { Session, Settings, Workout } from "../../lib/types";
+import { exerciseSignal, nextAction } from "../../lib/rules";
+import type { Session, Settings, Signal, Workout } from "../../lib/types";
+import { todayIso } from "../../components/workout/util";
 import { colors, fonts, space, type } from "../../theme";
 
 type Phase = "warmup" | "exercises" | "cooldown";
@@ -24,6 +26,7 @@ export default function Run() {
   const [cool, setCool] = useState<Set<number>>(new Set());
   const [rest, setRest] = useState<{ sec: number; next: string } | null>(null);
   const [assistText, setAssistText] = useState("");
+  const [history, setHistory] = useState<Session[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -33,6 +36,7 @@ export default function Run() {
       if (!s || !s.workoutId) return;
       const [w, st] = await Promise.all([r.getWorkout(s.workoutId), r.getSettings()]);
       setSession(s); setWorkout(w); setSettings(st);
+      setHistory((await r.getSessions()).filter((x) => x.id !== s.id));
       if (s.sets.some((x) => x.done)) {
         // Resume: skip warm-up, go to the first exercise with an open set.
         setPhase("exercises");
@@ -49,6 +53,11 @@ export default function Run() {
   useEffect(() => {
     setAssistText(active?.assistKg != null ? String(active.assistKg) : "");
   }, [active?.id]);
+
+  const signal: Signal | null =
+    ex && settings
+      ? ex.skill ? nextAction(ex.skill, history, settings, todayIso()) : exerciseSignal(ex, history, todayIso())
+      : null;
 
   if (!session || !workout || !settings) {
     return <View style={{ flex: 1 }}><Background /></View>;
@@ -77,19 +86,29 @@ export default function Run() {
   const tick = async () => {
     if (!active || !ex) return;
     const kg = assistText.trim() === "" ? null : Number(assistText.replace(",", "."));
-    const done = { ...active, done: true, doneAt: new Date().toISOString(), assistKg: ex.usesAssist && kg != null && !isNaN(kg) ? kg : active.assistKg };
-    const sets = session.sets.map((x) => (x.id === active.id ? done : x));
+    const kgOk = ex.usesAssist && kg != null && !isNaN(kg);
+    const done = { ...active, done: true, doneAt: new Date().toISOString(), assistKg: kgOk ? kg : active.assistKg };
+    // What you typed on this set carries over to the open sets of the same exercise.
+    const sets = session.sets.map((x) => {
+      if (x.id === active.id) return done;
+      if (x.exerciseId === ex.id && !x.done) return { ...x, reps: done.reps, seconds: done.seconds, assistKg: done.assistKg };
+      return x;
+    });
     const next = { ...session, sets };
     await persist(next);
+    // The assist kg you typed is the current assist for this skill (the next workout starts from it).
+    if (kgOk && ex.skill) {
+      const saved = await getRepo().saveSettings({ assistKg: { ...settings.assistKg, [ex.skill]: kg as number } });
+      setSettings(saved);
+    }
     const left = sets.filter((x) => x.exerciseId === ex.id && !x.done).length;
-    const lastOfAll = !sets.some((x) => !x.done);
+    const target = workout.exercises.findIndex((e, i) => i > idx && sets.some((x) => x.exerciseId === e.id && !x.done));
     if (left === 0) {
-      const target = workout.exercises.findIndex((e, i) => i > idx && sets.some((x) => x.exerciseId === e.id && !x.done));
       if (target >= 0) setIdx(target); else setPhase("cooldown");
     }
-    if (!lastOfAll) {
-      const nxtName = left > 0 ? ex.name : workout.exercises.find((e, i) => i > idx && sets.some((x) => x.exerciseId === e.id && !x.done))?.name ?? "";
-      setRest({ sec: ex.restSec, next: nxtName });
+    // Rest only when another set or exercise follows. After the last one the cool-down comes next.
+    if (left > 0 || target >= 0) {
+      setRest({ sec: ex.restSec, next: left > 0 ? ex.name : workout.exercises[target].name });
     }
   };
 
@@ -136,10 +155,12 @@ export default function Run() {
               <Text style={[type.exercise, { fontSize: 30, lineHeight: 34, marginTop: 12 }]}>{ex.name}</Text>
               <Text style={[type.muted, { marginTop: 8 }]}>Target {rangeText(ex)}. Rest {ex.restSec} s.</Text>
               {ex.notes ? <Text style={[type.muted, { marginTop: 8 }]}>{ex.notes}</Text> : null}
+              {signal && signal.kind !== "none" ? <Text style={[type.labelAccent, { marginTop: 8 }]}>{signal.message}</Text> : null}
+              <TextButton label="History" onPress={() => router.push(`/exercise/${encodeURIComponent(ex.skill ?? ex.id)}`)} color={colors.muted} />
               <View style={{ height: 24 }} />
               {exSets.map((x, i) => (
                 <View key={x.id} style={s.setRow}>
-                  <Text style={[type.exercise, { width: 64, fontFamily: x.id === active?.id ? fonts.bold : fonts.regular }]}>Set {i + 1}</Text>
+                  <Text style={[type.exercise, { width: 64 }]}>Set {i + 1}</Text>
                   <Text style={[type.exercise, { flex: 1, fontFamily: fonts.regular, fontVariant: ["tabular-nums"], color: x.done ? colors.ink : colors.muted }]}>
                     {(ex.unit === "seconds" ? x.seconds : x.reps) ?? "-"}{ex.unit === "seconds" ? " s" : " reps"}{x.assistKg != null ? ` · ${x.assistKg} kg assist` : ""}
                   </Text>

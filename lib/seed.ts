@@ -125,7 +125,7 @@ export function initialSettings(): Settings {
 /** Imported history rows become one session per date. Each row becomes N equal sets (no per-set detail exists). */
 export function historySessions(): Session[] {
   const byDate = new Map<string, Session>();
-  for (const r of PERSONAL.history) {
+  PERSONAL.history.forEach((r, rowIdx) => {
     let s = byDate.get(r.date);
     if (!s) {
       s = { id: `import-${r.date}`, date: r.date, workoutId: null, source: "import", startedAt: null, finishedAt: null, easyDay: false, feel: null, note: "", sets: [] };
@@ -133,12 +133,12 @@ export function historySessions(): Session[] {
     }
     for (let i = 0; i < r.sets; i++) {
       const e: SetEntry = {
-        id: `import-${r.date}-${r.skill}-${i}`, exerciseId: null, name: r.skill, skill: r.skill, step: r.step,
+        id: `import-${r.date}-${r.skill}-${rowIdx}-${i}`, exerciseId: null, name: r.skill, skill: r.skill, step: r.step,
         setIndex: i, reps: r.reps, seconds: r.seconds, assistKg: r.assistKg, done: true, doneAt: r.date,
       };
       s.sets.push(e);
     }
     if (r.feel) s.feel = r.feel;
-  }
+  });
   return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
 }
