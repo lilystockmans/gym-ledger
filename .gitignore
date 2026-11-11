@@ -13,3 +13,4 @@ seed/personal.json
 .DS_Store
 .claude/
 seed/active.json
+lib/*.personal.test.ts
