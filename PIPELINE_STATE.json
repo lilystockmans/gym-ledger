@@ -57,6 +57,6 @@
     "training-week SKILL.md": "edited 2026-11-13, backup SKILL.md.20261113-backup.bak",
     "memory calisthenics-notion-source-of-truth.md": "updated",
     "notion health page line": "NOT done: Notion connector not available in this session, Lily adds the line or reconnects Notion",
-    "dry run": "needs a real export from the phone (Settings, Export)"
+    "dry run": "done 2026-11-13 on gymledger-export-2026-11-13.json (read only): parses, fresh, signals match the data"
   }
 }
