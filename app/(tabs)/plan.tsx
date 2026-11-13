@@ -7,9 +7,11 @@ import { getRepo } from "../../lib/repo";
 import { periodAdjust, predictNextPeriod } from "../../lib/rules";
 import type { PlannedDay, Settings, WorkoutId } from "../../lib/types";
 import { DEFAULT_SETTINGS } from "../../lib/types";
+import { WORKOUTS } from "../../lib/seed";
 import { colors, space, type } from "../../theme";
 
-const CHOICES: WorkoutId[] = ["A", "B", "C"];
+const CHOICES: WorkoutId[] = ["A", "B", "C", "D", "E"];
+const TITLES: Record<WorkoutId, string> = Object.fromEntries(WORKOUTS.map((w) => [w.id, w.title])) as Record<WorkoutId, string>;
 
 export default function Plan() {
   const router = useRouter();
@@ -58,16 +60,16 @@ export default function Plan() {
           return (
             <View key={date}>
               <View style={s.day}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, minWidth: 110 }}>
                   <Text style={[type.exercise, date === today && { color: colors.accentText }]}>{name}</Text>
                   <Text style={type.muted}>{shortDate(date)}{date === today ? " · today" : ""}</Text>
                   {easy ? <Text style={type.labelAccent}>Easy day</Text> : null}
                 </View>
-                <View style={{ flexDirection: "row" }}>
+                <View style={s.picks}>
                   {CHOICES.map((c) => {
                     const on = cur === c;
                     return (
-                      <Pressable key={c} accessibilityRole="button" accessibilityLabel={`Full Body ${c} on ${name}`} accessibilityState={{ selected: on }}
+                      <Pressable key={c} accessibilityRole="button" accessibilityLabel={`${TITLES[c]} on ${name}`} accessibilityState={{ selected: on }}
                         onPress={() => place(date, cur, c)} style={[s.pick, on && s.pickOn]}>
                         <Text style={[type.exercise, { fontSize: 20 }, on && { color: colors.onAccent }]}>{c}</Text>
                       </Pressable>
@@ -89,7 +91,7 @@ export default function Plan() {
         <View style={{ height: 32 }} />
         <Rule />
         {CHOICES.map((c) => (
-          <View key={c}><TextBtn label={`Edit Full Body ${c}`} onPress={() => router.push(`/edit/${c}`)} /><Rule /></View>
+          <View key={c}><TextBtn label={`Edit ${TITLES[c]}`} onPress={() => router.push(`/edit/${c}`)} /><Rule /></View>
         ))}
         <TextBtn label="Settings" onPress={() => router.push("/settings")} />
       </ScrollView>
@@ -100,7 +102,8 @@ export default function Plan() {
 const s = StyleSheet.create({
   weekRow: { flexDirection: "row", alignItems: "center", marginTop: 32, marginBottom: 8 },
   nav: { minHeight: space.tap, minWidth: 80, justifyContent: "center" },
-  day: { flexDirection: "row", alignItems: "center", minHeight: 72, paddingVertical: 8 },
-  pick: { width: space.tap, height: space.tap, marginLeft: 8, borderRadius: 4, borderWidth: 1, borderColor: colors.ink, alignItems: "center", justifyContent: "center" },
+  day: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", minHeight: 72, paddingVertical: 8, rowGap: 8 },
+  picks: { flexDirection: "row", marginLeft: "auto" },
+  pick: { width: 52, height: space.tap, marginLeft: 6, borderRadius: 4, borderWidth: 1, borderColor: colors.ink, alignItems: "center", justifyContent: "center" },
   pickOn: { backgroundColor: colors.ink },
 });

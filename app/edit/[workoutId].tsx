@@ -10,7 +10,7 @@ import type { Block, Exercise, Settings, Workout, WorkoutId } from "../../lib/ty
 import { DEFAULT_SETTINGS } from "../../lib/types";
 import { colors, space, type } from "../../theme";
 
-const BLOCKS: Block[] = ["Skill", "Strength", "Core"];
+const BLOCKS: Block[] = ["Rehab", "Skill", "Strength", "Core"];
 
 function moveItem<T>(arr: T[], i: number, d: number): T[] {
   const j = i + d;

@@ -102,7 +102,52 @@ export const WORKOUTS: Workout[] = [
       ex("c-hkr", "Hanging Knee Raise", "Core", 3, 10, 10, 45),
     ],
   },
+  // D and E added 2026-11-13 for the injury block (tibialis posterior, chiro rehab). No running, gym 6 days.
+  {
+    id: "D",
+    title: "D: Lower body + rehab",
+    subtitle: "ankle rehab, legs, no jumping",
+    warmup: [...WARMUP.slice(0, 4), "No jumping today. Both feet down on every loaded move"],
+    cooldown: COOLDOWN,
+    exercises: [
+      ...rehab("d"),
+      ex("d-thrust", "Hip Thrust", "Strength", 3, 10, 10, 90, { notes: "Glutes. Weight in this app, not COROS" }),
+      ex("d-rdl", "Dumbbell Romanian Deadlift", "Strength", 3, 10, 10, 90, { notes: "Hamstrings and glutes. Weight is total, both hands" }),
+      ex("d-press", "Leg Press", "Strength", 3, 10, 10, 90, { notes: "Both feet flat. Stop if the right ankle hurts more than 3 out of 10" }),
+      ex("d-add", "Adductor Machine", "Strength", 3, 12, 12, 60, { notes: "Inner thigh" }),
+      ex("d-abd", "Abductor Machine", "Strength", 3, 12, 12, 60, { notes: "Outer thigh, glute medius" }),
+      ex("d-curl", "Lying Leg Curl", "Strength", 3, 10, 10, 60, { notes: "Hamstrings" }),
+      ex("d-side", "Side Plank", "Core", 3, 30, 30, 45, { unit: S, perSide: true }),
+    ],
+  },
+  {
+    id: "E",
+    title: "E: Bike + core + rehab",
+    subtitle: "bike Zone 2 on the watch, core, ankle rehab",
+    warmup: [
+      "Rehab block first (below)",
+      "Bike on the watch: 5 min easy, 30 min heart rate Zone 2, 5 min easy",
+      "Stop the bike if the right ankle hurts more than 3 out of 10",
+    ],
+    cooldown: COOLDOWN,
+    exercises: [
+      ...rehab("e"),
+      ex("e-deadbug", "Dead Bug", "Core", 3, 10, 10, 45, { notes: "Lower back stays on the floor" }),
+      ex("e-pallof", "Pallof Press", "Core", 3, 10, 10, 45, { perSide: true, notes: "Cable or band at chest height. Resist the turn" }),
+      ex("e-hollow", "Hollow Hold", "Core", 3, 20, 20, 45, { unit: S, notes: "Knees bent is fine. Lower back on the floor" }),
+      ex("e-backext", "Back Extension", "Core", 3, 12, 12, 45, { notes: "Bench or floor. Slow" }),
+    ],
+  },
 ];
+
+/** Chiro rehab for the right tibialis posterior (2026-11-13). Every day, both legs. */
+function rehab(prefix: string): Exercise[] {
+  return [
+    ex(`${prefix}-band`, "Band Ankle Exercise", "Rehab", 3, 12, 12, 30, { perSide: true, notes: "Elastic band, as the chiro showed" }),
+    ex(`${prefix}-ballcalf`, "Calf Raise, tennis ball between ankles", "Rehab", 3, 12, 12, 30, { notes: "Ball below and behind the ankle bones. Squeeze it the whole time" }),
+    ex(`${prefix}-balance`, "Single-Leg Balance Reaches", "Rehab", 3, 8, 8, 30, { perSide: true, notes: "Stand on one leg. Point the other forward, back, to the side, then running position = 1 rep" }),
+  ];
+}
 
 export const PERSONAL: PersonalSeed = active as PersonalSeed;
 

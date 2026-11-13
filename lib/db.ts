@@ -68,6 +68,16 @@ export async function migrate(db: Db): Promise<void> {
   }
 }
 
+/**
+ * Adds workouts that are new in lib/seed.ts (D and E, 2026-11-13) to a database seeded before they existed.
+ * INSERT OR IGNORE: workouts already on the phone, including Lily's own edits, are never overwritten.
+ */
+export async function addMissingWorkouts(db: Db): Promise<void> {
+  for (const w of WORKOUTS) {
+    await db.runAsync("INSERT OR IGNORE INTO workouts (id, json) VALUES (?, ?)", w.id, JSON.stringify(w));
+  }
+}
+
 /** Fills the database from lib/seed.ts exactly once. The flag and the data are written in one transaction. */
 export async function seedIfNeeded(db: Db): Promise<void> {
   const flag = await db.getFirstAsync<{ value: string }>("SELECT value FROM meta WHERE key = 'seeded'");
@@ -119,6 +129,7 @@ export function openDb(): Promise<Db> {
       await db.execAsync("PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;");
       await migrate(db);
       await seedIfNeeded(db);
+      await addMissingWorkouts(db);
       return db;
     })();
     opening.catch(() => { opening = null; });

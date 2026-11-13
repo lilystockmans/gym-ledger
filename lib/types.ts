@@ -1,8 +1,8 @@
 // CONTRACT FILE. Workers must not change this file. Ask the scrum master.
 // All dates are ISO strings "YYYY-MM-DD" in local time. Timestamps are ISO strings.
 
-export type WorkoutId = "A" | "B" | "C";
-export type Block = "Skill" | "Strength" | "Core";
+export type WorkoutId = "A" | "B" | "C" | "D" | "E";
+export type Block = "Rehab" | "Skill" | "Strength" | "Core";
 export type Unit = "reps" | "seconds";
 
 export type Exercise = {
