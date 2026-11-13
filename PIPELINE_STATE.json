@@ -1,6 +1,6 @@
 {
   "project": "gym-ledger",
-  "stage": "phase3-phone-feedback",
+  "stage": "phase3-in-use",
   "completed": [
     "repo+github",
     "scaffold",
@@ -10,7 +10,7 @@
     "gradle-release-stub",
     "wiki"
   ],
-  "next": "Lily unlocks phone and runs the 5 checks (opens, logs a set, restart keeps data, airplane mode, export share sheet); then Phase 3 at the gym",
+  "next": "Lily uses the app for real sessions; then Phase 4 (each needs her yes): edit ~/.claude/skills/training-week/SKILL.md to read the newest Gym Ledger export; update memory calisthenics-notion-source-of-truth.md; add a line on the Notion Health page.",
   "date": "2026-11-11",
   "github": "https://github.com/lilystockmans/gym-ledger",
   "notes": [
@@ -31,7 +31,7 @@
     "Settings title 86-88px because 'Settings' is too wide at 100px",
     "SQLite untested on a phone"
   ],
-  "installed": "2026-11-11 on Pixel 8 via adb, process running, no crash in log (phone was locked)",
+  "installed": "2026-11-13 fixed APK on Pixel 8 (commit c112825)",
   "phone_checks_2026-11-11": {
     "open": "works",
     "restart keeps data": "works",
@@ -43,9 +43,14 @@
     "export share sheet": "works"
   },
   "todo_tomorrow": [
-    "Today screen: the 'Start a new one' / Continue buttons overlap the exercise list text and are hard to read. Give the bottom bar a background or let the list scroll above it.",
-    "Run screen: add a way to go back to the previous exercise (and edit a ticked set) after a wrong entry.",
-    "Run screen: the bottom panel overlaps other text when the keyboard is open. Give it a background or move the content up and let it scroll.",
-    "Open items: easy-day override cannot change during a run; Settings title is 88px; then Phase 3 at the gym"
-  ]
+    "Full Body C subtitle is cut off on Today (long text, no ellipsis)",
+    "easy-day override cannot change during a run",
+    "Settings title 88px"
+  ],
+  "phone_checks_2026-11-13": {
+    "keyboard panel": "works",
+    "skip set": "works",
+    "today bar": "fixed and verified",
+    "previous and reopen set": "checked in preview only"
+  }
 }
