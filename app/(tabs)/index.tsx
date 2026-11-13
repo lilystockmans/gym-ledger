@@ -129,5 +129,5 @@ const s = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "transparent" },
   scroll: { paddingHorizontal: space.margin },
   row: { flexDirection: "row", alignItems: "center", minHeight: 56, borderBottomWidth: 1, borderBottomColor: colors.surface },
-  bar: { position: "absolute", left: 0, right: 0, padding: space.margin },
+  bar: { position: "absolute", left: 0, right: 0, padding: space.margin, backgroundColor: "rgba(216,214,201,0.97)", borderTopWidth: 1, borderTopColor: colors.surface },
 });

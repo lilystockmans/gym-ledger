@@ -114,6 +114,26 @@ export default function Run() {
     }
   };
 
+  // Skip one set: it is removed from today's session, so it never counts as done or as planned.
+  const skipSet = async () => {
+    if (!active || !ex) return;
+    let n = 0;
+    const sets = session.sets
+      .filter((x) => x.id !== active.id)
+      .map((x) => (x.exerciseId === ex.id ? { ...x, setIndex: n++ } : x));
+    await persist({ ...session, sets });
+    const left = sets.filter((x) => x.exerciseId === ex.id && !x.done).length;
+    const target = workout.exercises.findIndex((e, i) => i > idx && sets.some((x) => x.exerciseId === e.id && !x.done));
+    if (left === 0) {
+      if (target >= 0) setIdx(target); else setPhase("cooldown");
+    }
+  };
+
+  // Tap a ticked set to open it again, for example after a wrong number.
+  const reopen = async (id: string) => {
+    await persist({ ...session, sets: session.sets.map((x) => (x.id === id ? { ...x, done: false, doneAt: null } : x)) });
+  };
+
   const toggle = (set: Set<number>, setter: (s: Set<number>) => void) => (i: number) => {
     const n = new Set(set);
     if (n.has(i)) n.delete(i); else n.add(i);
@@ -142,6 +162,7 @@ export default function Run() {
               <View style={{ height: 120 }} />
             </ScrollView>
             <View style={s.bar}>
+              {phase === "cooldown" ? <TextButton label="Back to exercises" onPress={() => { setIdx(workout.exercises.length - 1); setPhase("exercises"); }} color={colors.muted} /> : null}
               <PrimaryButton
                 label={phase === "warmup" ? "Start exercises" : "Finish"}
                 onPress={() => {
@@ -164,20 +185,20 @@ export default function Run() {
               <TextButton label="History" onPress={() => router.push(`/exercise/${encodeURIComponent(ex.skill ?? ex.id)}`)} color={colors.muted} />
               <View style={{ height: 24 }} />
               {exSets.map((x, i) => (
-                <View key={x.id} style={s.setRow}>
+                <Pressable key={x.id} style={s.setRow} onPress={() => (x.done ? reopen(x.id) : undefined)} accessibilityRole="button" accessibilityLabel={x.done ? `Open set ${i + 1} again` : `Set ${i + 1}`}>
                   <Text style={[type.exercise, { width: 64 }]}>Set {i + 1}</Text>
                   <Text style={[type.exercise, { flex: 1, fontFamily: fonts.regular, fontVariant: ["tabular-nums"], color: x.done ? colors.ink : colors.muted }]}>
                     {(ex.unit === "seconds" ? x.seconds : x.reps) ?? "-"}{ex.unit === "seconds" ? " s" : " reps"}{x.assistKg != null ? ` · ${x.assistKg} kg assist` : ""}
                   </Text>
-                  <Text style={type.labelAccent}>{x.done ? "Done" : ""}</Text>
-                </View>
+                  <Text style={type.labelAccent}>{x.done ? "Done · tap to change" : ""}</Text>
+                </Pressable>
               ))}
               <View style={{ height: 380 }} />
             </ScrollView>
             <View style={[s.panel, { bottom: kb }]}>
               {active ? (
                 <>
-                  <Text style={type.label}>Set {exSets.indexOf(active) + 1} of {exSets.length}{ex.perSide ? " · each side" : ""}</Text>
+                  <Text style={type.label}>Set {exSets.indexOf(active) + 1} of {exSets.length}{ex.perSide ? " · each side" : ""} · {doneCount} of {session.sets.length} done</Text>
                   <View style={s.stepper}>
                     <Pressable onPress={() => bump(-step)} accessibilityRole="button" accessibilityLabel="Minus" style={s.pm}>
                       <Text style={s.pmText}>-</Text>
@@ -209,7 +230,8 @@ export default function Run() {
                 <PrimaryButton label="Next exercise" onPress={() => nextExercise(idx)} style={{ height: 72 }} />
               )}
               <View style={s.foot}>
-                <Text style={type.muted}>{doneCount} of {session.sets.length} sets</Text>
+                {idx > 0 ? <TextButton label="Previous" onPress={() => setIdx(idx - 1)} color={colors.muted} /> : <View />}
+                {active ? <TextButton label="Skip set" onPress={skipSet} color={colors.muted} /> : <View />}
                 <TextButton label="Skip exercise" onPress={() => nextExercise(idx)} color={colors.muted} />
               </View>
             </View>
@@ -222,9 +244,9 @@ export default function Run() {
 
 const s = StyleSheet.create({
   pad: { paddingHorizontal: space.margin },
-  bar: { position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin },
+  bar: { position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin, backgroundColor: colors.bg, borderTopWidth: 1, borderTopColor: colors.surface },
   setRow: { flexDirection: "row", alignItems: "center", minHeight: 48, borderBottomWidth: 1, borderBottomColor: colors.surface },
-  panel: { position: "absolute", left: 0, right: 0, paddingHorizontal: space.margin, paddingBottom: 12, paddingTop: 12 },
+  panel: { position: "absolute", left: 0, right: 0, backgroundColor: colors.bg, borderTopWidth: 1, borderTopColor: colors.surface, paddingHorizontal: space.margin, paddingBottom: 12, paddingTop: 12 },
   stepper: { flexDirection: "row", alignItems: "center", marginVertical: 4 },
   pm: { width: 72, height: 72, borderRadius: 4, borderWidth: 2, borderColor: colors.ink, alignItems: "center", justifyContent: "center" },
   pmText: { fontFamily: fonts.medium, fontSize: 40, lineHeight: 44, color: colors.ink },
