@@ -1,7 +1,8 @@
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { PrimaryButton, TextButton } from "../../components/workout/ui";
 import { buildSession, plannedSets, rangeText, todayIso } from "../../components/workout/util";
 import { getRepo } from "../../lib/repo";
@@ -21,7 +22,7 @@ export default function Home() {
   const [periods, setPeriods] = useState<string[]>([]);
   const [full, setFull] = useState<Set<string>>(new Set());
   const today = todayIso();
-  const insets = useSafeAreaInsets();
+  const tabBar = useBottomTabBarHeight();
   const starting = useRef(false);
 
   useFocusEffect(
@@ -108,7 +109,7 @@ export default function Home() {
         ) : null}
         <View style={{ height: unfinished ? 260 : 190 }} />
       </ScrollView>
-      <View style={[s.bar, { bottom: 64 + insets.bottom }]}>
+      {w || unfinished ? <View style={[s.bar, { bottom: tabBar }]}>
         {unfinished ? (
           <PrimaryButton label="Continue" onPress={() => router.push(`/workout/${unfinished.id}`)} style={{ marginBottom: 8 }} />
         ) : null}
@@ -117,7 +118,7 @@ export default function Home() {
             <Text style={[type.button, unfinished && { color: colors.ink }]}>{unfinished ? "Start a new one" : "Start workout"}</Text>
           </Pressable>
         ) : null}
-      </View>
+      </View> : null}
     </SafeAreaView>
   );
 }

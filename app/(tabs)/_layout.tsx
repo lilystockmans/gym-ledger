@@ -15,7 +15,7 @@ export default function TabsLayout() {
           tabBarInactiveTintColor: colors.muted,
           tabBarLabelStyle: { fontFamily: fonts.bold, fontSize: 12, textTransform: "uppercase", letterSpacing: 0.7 },
           tabBarIconStyle: { display: "none" },
-          tabBarStyle: { position: "absolute", backgroundColor: "rgba(216,214,201,0.88)", borderTopColor: colors.surface, borderTopWidth: 1, height: 64, elevation: 0 },
+          tabBarStyle: { position: "absolute", backgroundColor: "rgba(216,214,201,0.97)", borderTopColor: colors.surface, borderTopWidth: 1, height: 64, elevation: 0 },
           tabBarItemStyle: { justifyContent: "center" },
           sceneStyle: { backgroundColor: "transparent" },
         }}
