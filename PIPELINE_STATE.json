@@ -1,6 +1,6 @@
 {
   "project": "gym-ledger",
-  "stage": "phase3-in-use",
+  "stage": "phase4-partial",
   "completed": [
     "repo+github",
     "scaffold",
@@ -52,5 +52,11 @@
     "skip set": "works",
     "today bar": "fixed and verified",
     "previous and reopen set": "checked in preview only"
+  },
+  "phase4": {
+    "training-week SKILL.md": "edited 2026-11-13, backup SKILL.md.20261113-backup.bak",
+    "memory calisthenics-notion-source-of-truth.md": "updated",
+    "notion health page line": "NOT done: Notion connector not available in this session, Lily adds the line or reconnects Notion",
+    "dry run": "needs a real export from the phone (Settings, Export)"
   }
 }
