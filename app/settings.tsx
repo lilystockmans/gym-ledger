@@ -1,7 +1,7 @@
 import { useRouter } from "expo-router";
 import { Background } from "../components/Background";
 import { useCallback, useEffect, useState } from "react";
-import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Btn, Field, Rule, Stepper, TextBtn, iso, niceDate } from "../components/plan/ui";
 import { shareExport } from "../lib/export";
@@ -99,6 +99,24 @@ export default function SettingsScreen() {
           onChange={async (n) => setSettings(await getRepo().saveSettings({ easyDays: n }))} />
         <Text style={[type.muted, { marginTop: 4 }]}>Each easy day has one set fewer per exercise.</Text>
 
+        <View style={{ height: 32 }} />
+        <Text style={type.label}>Rest timer</Text>
+        <View style={{ flexDirection: "row", marginTop: 8 }}>
+          <Choice label="On" on={settings.restTimer} onPress={async () => setSettings(await getRepo().saveSettings({ restTimer: true }))} />
+          <Choice label="Off" on={!settings.restTimer} onPress={async () => setSettings(await getRepo().saveSettings({ restTimer: false }))} />
+        </View>
+        <Text style={[type.muted, { marginTop: 8 }]}>A rest screen with a countdown after each ticked set. Turn it off when your watch times the rests.</Text>
+        {settings.restTimer ? (
+          <>
+            <View style={{ height: 24 }} />
+            <Text style={type.label}>Vibrate when the rest ends</Text>
+            <View style={{ flexDirection: "row", marginTop: 8 }}>
+              <Choice label="On" on={settings.restVibrate} onPress={async () => setSettings(await getRepo().saveSettings({ restVibrate: true }))} />
+              <Choice label="Off" on={!settings.restVibrate} onPress={async () => setSettings(await getRepo().saveSettings({ restVibrate: false }))} />
+            </View>
+          </>
+        ) : null}
+
         <View style={{ height: 40 }} />
         <Text style={type.label}>Export</Text>
         <View style={{ height: 8 }} />
@@ -110,5 +128,14 @@ export default function SettingsScreen() {
     </KeyboardAvoidingView>
     </SafeAreaView>
     </View>
+  );
+}
+
+function Choice({ label, on, onPress }: { label: string; on: boolean; onPress: () => void }) {
+  return (
+    <Pressable accessibilityRole="button" accessibilityState={{ selected: on }} onPress={onPress}
+      style={{ minHeight: space.tap, minWidth: 96, paddingHorizontal: 16, marginRight: 8, borderRadius: 4, borderWidth: 1, borderColor: colors.ink, backgroundColor: on ? colors.ink : "transparent", alignItems: "center", justifyContent: "center" }}>
+      <Text style={[type.exercise, { fontSize: 16 }, on && { color: colors.onAccent }]}>{label}</Text>
+    </Pressable>
   );
 }

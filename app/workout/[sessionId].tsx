@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RunBackground as Background } from "../../components/workout/RunBackground";
+import { RestTimer } from "../../components/workout/RestTimer";
 import { PrimaryButton, TextButton, TickList } from "../../components/workout/ui";
 import { rangeText } from "../../components/workout/util";
 import { getRepo } from "../../lib/repo";
@@ -23,6 +24,7 @@ export default function Run() {
   const [idx, setIdx] = useState(0);
   const [warm, setWarm] = useState<Set<number>>(new Set());
   const [cool, setCool] = useState<Set<number>>(new Set());
+  const [rest, setRest] = useState<{ sec: number; next: string } | null>(null);
   const [kb, setKb] = useState(0);
   const [assistText, setAssistText] = useState("");
   const [history, setHistory] = useState<Session[]>([]);
@@ -112,6 +114,10 @@ export default function Run() {
     if (left === 0) {
       if (target >= 0) setIdx(target); else setPhase("cooldown");
     }
+    // Rest screen only when the switch in Settings is on and another set or exercise follows.
+    if (settings.restTimer && (left > 0 || target >= 0)) {
+      setRest({ sec: ex.restSec, next: left > 0 ? ex.name : workout.exercises[target].name });
+    }
   };
 
   // Skip one set: it is removed from today's session, so it never counts as done or as planned.
@@ -179,7 +185,7 @@ export default function Run() {
             <ScrollView contentContainerStyle={s.pad}>
               <Text style={[type.label, { marginTop: 24 }]}>{ex.block} · {idx + 1} of {workout.exercises.length}</Text>
               <Text style={[type.exercise, { fontSize: 30, lineHeight: 34, marginTop: 12 }]}>{ex.name}</Text>
-              <Text style={[type.muted, { marginTop: 8 }]}>Target {rangeText(ex)}.</Text>
+              <Text style={[type.muted, { marginTop: 8 }]}>Target {rangeText(ex)}.{settings.restTimer ? ` Rest ${ex.restSec} s.` : ""}</Text>
               {ex.notes ? <Text style={[type.muted, { marginTop: 8 }]}>{ex.notes}</Text> : null}
               {signal && signal.kind !== "none" ? <Text style={[type.labelAccent, { marginTop: 8 }]}>{signal.message}</Text> : null}
               <TextButton label="History" onPress={() => router.push(`/exercise/${encodeURIComponent(ex.skill ?? ex.id)}`)} color={colors.muted} />
@@ -238,6 +244,7 @@ export default function Run() {
           </>
         ) : null}
       </SafeAreaView>
+      {rest ? <RestTimer seconds={rest.sec} vibrate={settings.restVibrate} next={rest.next} onDone={() => setRest(null)} /> : null}
     </View>
   );
 }

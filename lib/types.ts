@@ -67,6 +67,7 @@ export type Settings = {
   lastExportAt: string | null;
   currentSteps: Record<string, string>; // skill name -> current ladder step name
   assistKg: Record<string, number>; // skill name -> current assist kg (Pull-up, Dip)
+  restTimer: boolean; // show the rest screen after each ticked set. Switch in Settings
   restVibrate: boolean;
   easyOverrides: string[]; // exercise ids that Lily switched back to the full set count, for today only: "YYYY-MM-DD:exerciseId"
 };
@@ -82,6 +83,7 @@ export const DEFAULT_SETTINGS: Settings = {
   lastExportAt: null,
   currentSteps: {},
   assistKg: {},
+  restTimer: true,
   restVibrate: true,
   easyOverrides: [],
 };
