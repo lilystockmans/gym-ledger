@@ -1,6 +1,6 @@
 {
   "project": "gym-ledger",
-  "stage": "phase4-partial",
+  "stage": "phase4-done",
   "completed": [
     "repo+github",
     "scaffold",
@@ -56,7 +56,8 @@
   "phase4": {
     "training-week SKILL.md": "edited 2026-11-13, backup SKILL.md.20261113-backup.bak",
     "memory calisthenics-notion-source-of-truth.md": "updated",
-    "notion health page line": "NOT done: Notion connector not available in this session, Lily adds the line or reconnects Notion",
+    "notion health page line": "done 2026-11-16 (one line under 'How to log a session')",
     "dry run": "done 2026-11-13 on gymledger-export-2026-11-13.json (read only): parses, fresh, signals match the data"
-  }
+  },
+  "rest_timer": "restored 2026-11-16 with On/Off and vibrate switches in Settings (settings.restTimer, default on)"
 }
