@@ -1,7 +1,8 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Background } from "../../components/Background";
 import { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { KeyboardScroll } from "../../components/KeyboardScroll";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Btn, Field, Rule, Stepper, TextBtn } from "../../components/plan/ui";
 import { getRepo } from "../../lib/repo";
@@ -97,8 +98,15 @@ export default function Editor() {
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
     <Background />
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin, paddingBottom: 160 }} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll
+        contentStyle={{ paddingHorizontal: space.margin, paddingBottom: 48 }}
+        footer={
+          <View style={{ padding: space.margin }}>
+            {saved ? <Text style={[type.labelAccent, { marginBottom: 8 }]}>Saved</Text> : null}
+            <Btn label="Save" onPress={save} />
+          </View>
+        }
+      >
         <TextBtn label="Back" onPress={() => router.back()} />
         <Text style={[type.display, { marginTop: 8 }]}>{w.title}</Text>
         <Field label="Title" value={w.title} onChangeText={(t) => { touch(); setW({ ...w, title: t }); }} />
@@ -180,12 +188,7 @@ export default function Editor() {
 
         <Lines title="Warm-up" lines={w.warmup} onChange={(l) => { touch(); setW({ ...w, warmup: l }); }} />
         <Lines title="Cool-down" lines={w.cooldown} onChange={(l) => { touch(); setW({ ...w, cooldown: l }); }} />
-      </ScrollView>
-      <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin }}>
-        {saved ? <Text style={[type.labelAccent, { marginBottom: 8 }]}>Saved</Text> : null}
-        <Btn label="Save" onPress={save} />
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardScroll>
     </SafeAreaView>
     </View>
   );

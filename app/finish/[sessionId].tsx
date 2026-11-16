@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { KeyboardScroll, useRevealOnFocus } from "../../components/KeyboardScroll";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getRepo } from "../../lib/repo";
 import { nextAction } from "../../lib/rules";
@@ -41,7 +42,16 @@ export default function Finish() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.dark }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ paddingHorizontal: space.margin }} keyboardShouldPersistTaps="handled">
+        <KeyboardScroll
+          contentStyle={{ paddingHorizontal: space.margin, paddingBottom: 24 }}
+          footer={
+            <View style={s.bar}>
+              <Pressable onPress={save} accessibilityRole="button" style={s.done}>
+                <Text style={[type.button, { color: colors.dark }]}>Done</Text>
+              </Pressable>
+            </View>
+          }
+        >
           <Text style={[type.label, { color: colors.onDark, marginTop: 24 }]}>Workout finished</Text>
           <Text style={[type.displayOnDark, { marginTop: 12 }]}>Well done</Text>
           <Text style={[type.exercise, { color: colors.onDark, marginTop: 24, fontSize: 20 }]}>
@@ -61,23 +71,25 @@ export default function Finish() {
               </Pressable>
             ))}
           </View>
-          <TextInput
-            value={note}
-            onChangeText={setNote}
-            placeholder="Note (optional)"
-            placeholderTextColor={colors.accentOnDark}
-            multiline
-            style={s.note}
-          />
-          <View style={{ height: 120 }} />
-        </ScrollView>
-        <View style={s.bar}>
-          <Pressable onPress={save} accessibilityRole="button" style={s.done}>
-            <Text style={[type.button, { color: colors.dark }]}>Done</Text>
-          </Pressable>
-        </View>
+          <NoteInput value={note} onChangeText={setNote} />
+        </KeyboardScroll>
       </SafeAreaView>
     </View>
+  );
+}
+
+function NoteInput({ value, onChangeText }: { value: string; onChangeText: (t: string) => void }) {
+  const reveal = useRevealOnFocus();
+  return (
+    <TextInput
+      value={value}
+      onChangeText={onChangeText}
+      onFocus={reveal}
+      placeholder="Note (optional)"
+      placeholderTextColor={colors.accentOnDark}
+      multiline
+      style={s.note}
+    />
   );
 }
 
@@ -87,6 +99,6 @@ const s = StyleSheet.create({
   feel: { flex: 1, height: 64, borderRadius: 4, borderWidth: 1, borderColor: colors.onDark, alignItems: "center", justifyContent: "center" },
   feelOn: { backgroundColor: colors.onDark },
   note: { marginTop: 16, minHeight: 56, borderBottomWidth: 1, borderBottomColor: "#4A4D52", color: colors.onDark, fontFamily: fonts.regular, fontSize: 16, paddingVertical: 12, outlineStyle: "none" } as object,
-  bar: { position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin },
+  bar: { padding: space.margin },
   done: { height: 64, borderRadius: 4, backgroundColor: colors.onDark, alignItems: "center", justifyContent: "center" },
 });

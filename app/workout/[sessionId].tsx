@@ -1,11 +1,13 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
-import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RunBackground as Background } from "../../components/workout/RunBackground";
 import { RestTimer } from "../../components/workout/RestTimer";
 import { PrimaryButton, TextButton, TickList } from "../../components/workout/ui";
-import { rangeText } from "../../components/workout/util";
+import { rangeText, usualStep } from "../../components/workout/util";
+import { useKeyboard } from "../../components/KeyboardScroll";
+import { SKILLS } from "../../lib/ladders";
 import { getRepo } from "../../lib/repo";
 import { exerciseSignal, nextAction } from "../../lib/rules";
 import type { Session, Settings, Signal, Workout } from "../../lib/types";
@@ -25,16 +27,11 @@ export default function Run() {
   const [warm, setWarm] = useState<Set<number>>(new Set());
   const [cool, setCool] = useState<Set<number>>(new Set());
   const [rest, setRest] = useState<{ sec: number; next: string } | null>(null);
-  const [kb, setKb] = useState(0);
   const [assistText, setAssistText] = useState("");
   const [history, setHistory] = useState<Session[]>([]);
 
-  // Lift the bottom panel above the keyboard so the typed number stays visible.
-  useEffect(() => {
-    const a = Keyboard.addListener("keyboardDidShow", (e) => setKb(e.endCoordinates.height));
-    const b = Keyboard.addListener("keyboardDidHide", () => setKb(0));
-    return () => { a.remove(); b.remove(); };
-  }, []);
+  // Lift the bottom panel above the keyboard so the typed number stays visible (shared helper).
+  const { height: kb } = useKeyboard();
 
   useEffect(() => {
     (async () => {
@@ -148,6 +145,28 @@ export default function Run() {
 
   const doneCount = session.sets.filter((x) => x.done).length;
 
+  // Level today: the ladder step for the open sets of this exercise, for today only.
+  const skillDef = ex?.skill ? SKILLS.find((k) => k.name === ex.skill) : undefined;
+  const usual = skillDef ? usualStep(skillDef, settings, history) : null;
+  const openSets = exSets.filter((x) => !x.done);
+  const todayStep = skillDef ? (openSets[0]?.step ?? exSets[exSets.length - 1]?.step ?? usual) : null;
+  const levelDiffers = !!todayStep && !!usual && todayStep !== usual;
+  const shortOf = (name: string | null) => skillDef?.steps.find((x) => x.name === name)?.short ?? name ?? "";
+  // Only the sets not ticked yet change. Ticked sets keep their own step. settings.currentSteps is never touched.
+  const chooseLevel = async (stepName: string) => {
+    if (!ex) return;
+    await persist({ ...session, sets: session.sets.map((x) => (x.exerciseId === ex.id && !x.done ? { ...x, step: stepName } : x)) });
+  };
+
+  // Cool-down overview: how many exercises are finished, and which ones still have open sets.
+  const status = workout.exercises.map((e, i) => {
+    const sets = session.sets.filter((x) => x.exerciseId === e.id);
+    return { e, i, total: sets.length, done: sets.filter((x) => x.done).length };
+  });
+  const finishedCount = status.filter((x) => x.total > 0 && x.done === x.total).length;
+  const unfinished = status.filter((x) => x.done < x.total);
+  const droppedCount = status.filter((x) => x.total === 0).length;
+
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <Background />
@@ -163,14 +182,46 @@ export default function Run() {
               {phase === "warmup" ? (
                 <TickList items={workout.warmup} ticked={warm} onToggle={toggle(warm, setWarm)} />
               ) : (
-                <TickList items={workout.cooldown} ticked={cool} onToggle={toggle(cool, setCool)} />
+                <>
+                  <Text style={type.exercise}>{finishedCount} of {workout.exercises.length} exercises done</Text>
+                  {droppedCount > 0 ? <Text style={[type.muted, { marginTop: 4 }]}>{droppedCount} skipped, all sets removed.</Text> : null}
+                  {unfinished.length === 0 ? (
+                    <Text style={[type.labelAccent, { marginTop: 8 }]}>Nothing left. Every exercise is done.</Text>
+                  ) : (
+                    <View style={{ marginTop: 12 }}>
+                      <Text style={type.labelAccent}>{unfinished.length} not finished</Text>
+                      {unfinished.map((u) => (
+                        <Pressable
+                          key={u.e.id}
+                          onPress={() => { setIdx(u.i); setPhase("exercises"); }}
+                          accessibilityRole="button"
+                          accessibilityLabel={`Go back to ${u.e.name}`}
+                          style={s.leftRow}
+                        >
+                          <View style={{ flex: 1 }}>
+                            <Text style={type.exercise}>{u.e.name}</Text>
+                            <Text style={type.muted}>{u.done === 0 ? "Not started" : `${u.done} of ${u.total} sets done`}</Text>
+                          </View>
+                          <Text style={type.labelAccent}>Go back</Text>
+                        </Pressable>
+                      ))}
+                    </View>
+                  )}
+                  <Text style={[type.label, { marginTop: 32, marginBottom: 4 }]}>Cool-down list</Text>
+                  <TickList items={workout.cooldown} ticked={cool} onToggle={toggle(cool, setCool)} />
+                </>
               )}
-              <View style={{ height: 120 }} />
+              <View style={{ height: 24 }} />
             </ScrollView>
             <View style={s.bar}>
-              {phase === "cooldown" ? <TextButton label="Back to exercises" onPress={() => { setIdx(workout.exercises.length - 1); setPhase("exercises"); }} color={colors.muted} /> : null}
+              {phase === "cooldown" ? <TextButton label="Back to exercises" onPress={() => { setIdx(unfinished.length > 0 ? unfinished[0].i : workout.exercises.length - 1); setPhase("exercises"); }} color={colors.muted} /> : null}
+              {phase === "cooldown" && unfinished.length > 0 ? (
+                <Text style={[type.muted, { marginBottom: 8 }]}>
+                  Finishing now ends the workout. {unfinished.length === 1 ? "The open sets of 1 exercise are" : `The open sets of ${unfinished.length} exercises are`} not counted.
+                </Text>
+              ) : null}
               <PrimaryButton
-                label={phase === "warmup" ? "Start exercises" : "Finish"}
+                label={phase === "warmup" ? "Start exercises" : unfinished.length === 0 ? "Finish workout" : "Finish and skip the rest"}
                 onPress={() => {
                   if (phase === "warmup") {
                     const open = workout.exercises.findIndex((e) => session.sets.some((x) => x.exerciseId === e.id && !x.done));
@@ -189,7 +240,42 @@ export default function Run() {
               {ex.notes ? <Text style={[type.muted, { marginTop: 8 }]}>{ex.notes}</Text> : null}
               {signal && signal.kind !== "none" ? <Text style={[type.labelAccent, { marginTop: 8 }]}>{signal.message}</Text> : null}
               <TextButton label="History" onPress={() => router.push(`/exercise/${encodeURIComponent(ex.skill ?? ex.id)}`)} color={colors.muted} />
-              <View style={{ height: 24 }} />
+              <View style={{ height: 16 }} />
+              {skillDef ? (
+                <View style={s.level}>
+                  <Text style={type.label}>Level today</Text>
+                  <Text style={[type.exercise, { marginTop: 4 }]}>{todayStep ?? ""}</Text>
+                  {levelDiffers ? (
+                    <Text style={[type.labelAccent, { marginTop: 4 }]}>Not your usual level ({shortOf(usual)}). Today only.</Text>
+                  ) : (
+                    <Text style={[type.muted, { marginTop: 4 }]}>This is your usual level.</Text>
+                  )}
+                  {active ? (
+                    <>
+                      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+                        {skillDef.steps.map((st) => {
+                          const on = st.name === todayStep;
+                          return (
+                            <Pressable
+                              key={st.name}
+                              onPress={() => (on ? undefined : chooseLevel(st.name))}
+                              accessibilityRole="button"
+                              accessibilityState={{ selected: on }}
+                              accessibilityLabel={`Level today ${st.name}${st.name === usual ? ", your usual level" : ""}`}
+                              style={[s.chip, on && { backgroundColor: colors.ink }]}
+                            >
+                              <Text style={[type.exercise, { fontSize: 15 }, on && { color: colors.onAccent }]}>{st.short}</Text>
+                              {st.name === usual ? <Text style={[type.label, { fontSize: 10, lineHeight: 12 }, on && { color: colors.onAccent }]}>usual</Text> : null}
+                            </Pressable>
+                          );
+                        })}
+                      </View>
+                      <Text style={[type.muted, { marginTop: 8 }]}>Applies to the sets you have not ticked yet. Your plan does not change.</Text>
+                    </>
+                  ) : null}
+                </View>
+              ) : null}
+              <View style={{ height: 16 }} />
               {exSets.map((x, i) => (
                 <Pressable key={x.id} style={s.setRow} onPress={() => (x.done ? reopen(x.id) : undefined)} accessibilityRole="button" accessibilityLabel={x.done ? `Open set ${i + 1} again` : `Set ${i + 1}`}>
                   <Text style={[type.exercise, { width: 64 }]}>Set {i + 1}</Text>
@@ -251,7 +337,10 @@ export default function Run() {
 
 const s = StyleSheet.create({
   pad: { paddingHorizontal: space.margin },
-  bar: { position: "absolute", left: 0, right: 0, bottom: 0, padding: space.margin, backgroundColor: colors.bg, borderTopWidth: 1, borderTopColor: colors.surface },
+  bar: { padding: space.margin, backgroundColor: colors.bg, borderTopWidth: 1, borderTopColor: colors.surface },
+  leftRow: { flexDirection: "row", alignItems: "center", minHeight: 64, borderBottomWidth: 1, borderBottomColor: colors.surface, paddingVertical: 8 },
+  level: { borderTopWidth: 1, borderTopColor: colors.surface, paddingTop: 12, paddingBottom: 8 },
+  chip: { minHeight: 56, minWidth: 88, paddingHorizontal: 14, borderRadius: 4, borderWidth: 1, borderColor: colors.ink, alignItems: "center", justifyContent: "center" },
   setRow: { flexDirection: "row", alignItems: "center", minHeight: 48, borderBottomWidth: 1, borderBottomColor: colors.surface },
   panel: { position: "absolute", left: 0, right: 0, backgroundColor: colors.bg, borderTopWidth: 1, borderTopColor: colors.surface, paddingHorizontal: space.margin, paddingBottom: 12, paddingTop: 12 },
   stepper: { flexDirection: "row", alignItems: "center", marginVertical: 4 },

@@ -1,4 +1,5 @@
 import { periodAdjust, prefill } from "../../lib/rules";
+import { START, type Skill } from "../../lib/ladders";
 import type { Exercise, Session, SetEntry, Settings, Workout } from "../../lib/types";
 
 export function todayIso(d = new Date()): string {
@@ -61,4 +62,16 @@ export function buildSession(
     id, date, workoutId: w.id, source: "app", startedAt: new Date().toISOString(), finishedAt: null,
     easyDay, feel: null, note: "", sets,
   };
+}
+
+/** The ladder step Lily normally works at: her setting, else the newest logged step, else the starting point. */
+export function usualStep(skill: Skill, settings: Settings, history: Session[]): string {
+  const set = settings.currentSteps[skill.name];
+  if (set) return set;
+  const sorted = history.slice().sort((a, b) => a.date.localeCompare(b.date));
+  for (let i = sorted.length - 1; i >= 0; i--) {
+    const hit = sorted[i].sets.filter((x) => x.done && x.skill === skill.name && x.step).pop();
+    if (hit?.step) return hit.step;
+  }
+  return START[skill.name]?.step ?? skill.steps[0].name;
 }

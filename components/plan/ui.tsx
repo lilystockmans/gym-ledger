@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, TextInput, View, type TextInputProps } from "react-native";
 import { colors, fonts, space, type } from "../../theme";
+import { useRevealOnFocus } from "../KeyboardScroll";
 
 export function iso(d: Date): string {
   const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -57,12 +58,14 @@ export function Rule() {
 }
 
 export function Field(props: TextInputProps & { label: string; width?: number }) {
-  const { label, width, style, ...rest } = props;
+  const { label, width, style, onFocus, ...rest } = props;
+  const reveal = useRevealOnFocus();
   return (
     <View style={{ width, flex: width ? undefined : 1 }}>
       <Text style={type.label}>{label}</Text>
       <TextInput
         {...rest}
+        onFocus={(e) => { reveal(); onFocus?.(e); }}
         placeholderTextColor={colors.muted}
         style={[s.input, style]}
       />
